@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630" role="img" aria-labelledby="title description">
+  <title id="title">4LOG — Coming Soon</title>
+  <desc id="description">A new visual culture project is loading.</desc>
+  <rect width="1200" height="630" fill="#000"/>
+  <rect x="48" y="48" width="1104" height="534" fill="none" stroke="#fff" stroke-opacity=".18"/>
+  <text x="600" y="285" fill="#fff" font-family="Arial, sans-serif" font-size="150" font-weight="700" text-anchor="middle" letter-spacing="18">4LOG</text>
+  <text x="600" y="370" fill="#c0c0c0" font-family="Arial, sans-serif" font-size="25" text-anchor="middle" letter-spacing="10">A NEW VISUAL CULTURE PROJECT</text>
+  <text x="600" y="445" fill="#fff" font-family="Arial, sans-serif" font-size="21" text-anchor="middle" letter-spacing="8">COMING SOON</text>
+</svg>

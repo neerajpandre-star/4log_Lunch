@@ -1,0 +1,1106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>4LOG — Char Log Kya Kahenge, Mat Soch</title>
+    <meta name="description" content="4LOG — A luxury brand for the fearless. Built before it was branded. Break the noise.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Syncopate:wght@400;700&family=Inter:wght@300;400;500;600&family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        /* ═══════════════════════════════════════════
+            4LOG DESIGN SYSTEM — DARK MONOCHROME
+            ═══════════════════════════════════════════ */
+
+        :root {
+            --bg-void: #000000;
+            --bg-surface: #050505;
+            --text-primary: #f0f0f0;
+            --text-secondary: rgba(255, 255, 255, 0.5);
+            --text-ghost: rgba(255, 255, 255, 0.15);
+            --accent-silver: #c0c0c0;
+            --accent-white: #ffffff;
+            --border-subtle: rgba(255, 255, 255, 0.08);
+            --border-active: rgba(255, 255, 255, 0.35);
+            --glow-white: rgba(255, 255, 255, 0.12);
+            --bloom-radius: 80px;
+            --transition-smooth: cubic-bezier(0.16, 1, 0.3, 1);
+            --transition-dramatic: cubic-bezier(0.77, 0, 0.175, 1);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            background-color: var(--bg-void);
+            color: var(--text-primary);
+            font-family: 'Inter', -apple-system, sans-serif;
+            overflow-x: hidden;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+
+        /* ═══════════════════════════════════════════
+            FIXED NAVIGATION HEADER
+            ═══════════════════════════════════════════ */
+
+        header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            padding: 32px 56px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 200;
+            pointer-events: auto;
+            mix-blend-mode: difference;
+        }
+
+        .logo-container {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            pointer-events: auto;
+            cursor: pointer;
+            text-decoration: none;
+        }
+
+        .logo-icon {
+            width: 180px;
+            height: 40px;
+            position: relative;
+        }
+
+        .logo-icon svg {
+            width: 100%;
+            height: 100%;
+            fill: none;
+            stroke: var(--text-primary);
+            stroke-width: 1.5;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+        }
+
+        .logo-text {
+            font-family: 'Syncopate', sans-serif;
+            font-weight: 700;
+            font-size: 1.05rem;
+            letter-spacing: 0.35em;
+            color: var(--text-primary);
+            position: relative;
+        }
+
+        .logo-text .four {
+            position: relative;
+            display: inline-block;
+        }
+
+        .logo-text .four::after {
+            content: '';
+            position: absolute;
+            top: 15%;
+            left: 30%;
+            width: 60%;
+            height: 70%;
+            background: linear-gradient(135deg, 
+                transparent 0%, transparent 45%, 
+                rgba(255,255,255,0.6) 45%, rgba(255,255,255,0.6) 46%, 
+                transparent 46%, transparent 100%
+            );
+            pointer-events: none;
+            mix-blend-mode: overlay;
+            opacity: 0.7;
+        }
+
+        .nav-status {
+            font-family: 'Outfit', sans-serif;
+            font-size: 0.65rem;
+            font-weight: 400;
+            text-transform: uppercase;
+            letter-spacing: 0.25em;
+            color: var(--text-secondary);
+            border: 1px solid var(--border-subtle);
+            padding: 8px 18px;
+            border-radius: 100px;
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            background: rgba(255, 255, 255, 0.03);
+            pointer-events: auto;
+            transition: all 0.6s var(--transition-smooth);
+        }
+
+        .nav-status:hover {
+            border-color: var(--border-active);
+            color: var(--text-primary);
+            background: rgba(255, 255, 255, 0.06);
+        }
+
+        .sound-toggle {
+            width: 42px;
+            height: 42px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            border: 1px solid var(--border-active);
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.06);
+            cursor: pointer;
+            pointer-events: auto;
+            transition: all 0.3s var(--transition-smooth);
+            color: var(--text-primary);
+        }
+
+        .sound-toggle:hover {
+            background: rgba(255, 255, 255, 0.12);
+            border-color: var(--accent-white);
+        }
+
+        .sound-toggle svg {
+            width: 20px;
+            height: 20px;
+            fill: currentColor;
+        }
+
+        .sound-toggle .sound-off {
+            stroke: currentColor;
+            stroke-width: 2;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+        }
+
+        .sound-toggle.active .sound-off {
+            opacity: 0;
+        }
+
+        /* ═══════════════════════════════════════════
+            TIMELINE NAVIGATION DOTS
+            ═══════════════════════════════════════════ */
+
+        .timeline-nav {
+            position: fixed;
+            right: 44px;
+            top: 50%;
+            transform: translateY(-50%);
+            display: flex;
+            flex-direction: column;
+            gap: 0;
+            z-index: 200;
+        }
+
+        .timeline-item {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            padding: 12px 0;
+            cursor: pointer;
+            flex-direction: row-reverse;
+        }
+
+        .timeline-dot {
+            width: 6px;
+            height: 6px;
+            background-color: rgba(255, 255, 255, 0.15);
+            border-radius: 50%;
+            transition: all 0.6s var(--transition-smooth);
+            position: relative;
+            flex-shrink: 0;
+        }
+
+        .timeline-dot::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) scale(0);
+            width: 24px;
+            height: 24px;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            transition: all 0.6s var(--transition-smooth);
+        }
+
+        .timeline-label {
+            font-family: 'Outfit', sans-serif;
+            font-size: 0.6rem;
+            font-weight: 400;
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
+            color: rgba(255, 255, 255, 0);
+            transition: all 0.6s var(--transition-smooth);
+            white-space: nowrap;
+            transform: translateX(8px);
+        }
+
+        .timeline-item:hover .timeline-label {
+            color: rgba(255, 255, 255, 0.4);
+            transform: translateX(0);
+        }
+
+        .timeline-item.active .timeline-dot {
+            background-color: var(--accent-white);
+            transform: scale(1.5);
+            box-shadow: 0 0 12px rgba(255, 255, 255, 0.3);
+        }
+
+        .timeline-item.active .timeline-dot::before {
+            transform: translate(-50%, -50%) scale(1);
+            border-color: rgba(255, 255, 255, 0.5);
+        }
+
+        .timeline-item.active .timeline-label {
+            color: rgba(255, 255, 255, 0.6);
+            transform: translateX(0);
+        }
+
+        .timeline-line {
+            position: fixed;
+            right: 46.5px;
+            top: calc(50% - 66px);
+            width: 1px;
+            height: 132px;
+            background: linear-gradient(to bottom, 
+                transparent, 
+                rgba(255, 255, 255, 0.06) 20%, 
+                rgba(255, 255, 255, 0.06) 80%, 
+                transparent
+            );
+            z-index: 199;
+            pointer-events: none;
+        }
+
+        /* ═══════════════════════════════════════════
+            SCROLL CONTAINER
+            ═══════════════════════════════════════════ */
+
+        .scroll-container {
+            width: 100vw;
+            height: 100vh;
+            overflow-y: scroll;
+            scroll-snap-type: y mandatory;
+            scrollbar-width: none;
+        }
+
+        .scroll-container::-webkit-scrollbar {
+            display: none;
+        }
+
+        /* ═══════════════════════════════════════════
+            SECTION BASE STYLES
+            ═══════════════════════════════════════════ */
+
+        .section {
+            width: 100vw;
+            height: 100vh;
+            scroll-snap-align: start;
+            position: relative;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+            background: var(--bg-void);
+        }
+
+        .section canvas {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 2;
+        }
+
+        .section video {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            background: #000;
+            z-index: 0;
+        }
+
+        .section::before,
+        .section::after {
+            content: '';
+            position: absolute;
+            left: 0;
+            width: 100%;
+            height: 0;
+            background: var(--bg-void);
+            z-index: 5;
+            pointer-events: none;
+            transition: height 0.8s var(--transition-smooth);
+        }
+
+        .section::before { top: 0; }
+        .section::after { bottom: 0; }
+
+        .section-content {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            z-index: 10;
+            pointer-events: none;
+            padding: 0 56px 64px 56px;
+        }
+
+        .section-inner {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+        }
+
+        .section-info {
+            max-width: 600px;
+        }
+
+        .section-index {
+            font-family: 'Outfit', sans-serif;
+            font-size: 0.6rem;
+            font-weight: 400;
+            letter-spacing: 0.4em;
+            text-transform: uppercase;
+            color: var(--text-ghost);
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .section-index::before {
+            content: '';
+            width: 24px;
+            height: 1px;
+            background: rgba(255, 255, 255, 0.15);
+            display: inline-block;
+        }
+
+        .section-title {
+            font-family: 'Syncopate', sans-serif;
+            font-size: clamp(1.4rem, 2.8vw, 2.2rem);
+            font-weight: 700;
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+            color: var(--text-primary);
+            line-height: 1.3;
+            margin-bottom: 12px;
+            opacity: 0;
+            transform: translateY(20px);
+            transition: all 0.8s var(--transition-smooth);
+        }
+
+        .section.in-view .section-title {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .section-subtitle {
+            font-family: 'Outfit', sans-serif;
+            font-size: 0.78rem;
+            font-weight: 300;
+            letter-spacing: 0.06em;
+            color: var(--text-secondary);
+            line-height: 1.7;
+            max-width: 440px;
+            opacity: 0;
+            transform: translateY(14px);
+            transition: all 0.8s var(--transition-smooth) 0.15s;
+        }
+
+        .section.in-view .section-subtitle {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .section-meta {
+            text-align: right;
+            opacity: 0;
+            transform: translateY(14px);
+            transition: all 0.8s var(--transition-smooth) 0.3s;
+        }
+
+        .section.in-view .section-meta {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .section-meta-label {
+            font-family: 'Outfit', sans-serif;
+            font-size: 0.55rem;
+            font-weight: 400;
+            letter-spacing: 0.3em;
+            text-transform: uppercase;
+            color: var(--text-ghost);
+            margin-bottom: 6px;
+        }
+
+        .section-meta-value {
+            font-family: 'Outfit', sans-serif;
+            font-size: 0.7rem;
+            font-weight: 300;
+            letter-spacing: 0.1em;
+            color: var(--text-secondary);
+        }
+
+        .section-gradient {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 40%;
+            background: linear-gradient(to top, 
+                rgba(0, 0, 0, 0.9) 0%, 
+                rgba(0, 0, 0, 0.5) 40%, 
+                transparent 100%
+            );
+            z-index: 4;
+            pointer-events: none;
+        }
+
+        .section-vignette-top {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 25%;
+            background: linear-gradient(to bottom, 
+                rgba(0, 0, 0, 0.6) 0%, 
+                transparent 100%
+            );
+            z-index: 4;
+            pointer-events: none;
+        }
+
+        /* ═══════════════════════════════════════════
+            SCROLL INDICATOR
+            ═══════════════════════════════════════════ */
+
+        .scroll-indicator {
+            position: fixed;
+            bottom: 32px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 200;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 8px;
+            opacity: 1;
+            transition: opacity 0.8s var(--transition-smooth);
+            pointer-events: none;
+        }
+
+        .scroll-indicator.hidden {
+            opacity: 0;
+        }
+
+        .scroll-indicator-text {
+            font-family: 'Outfit', sans-serif;
+            font-size: 0.55rem;
+            letter-spacing: 0.3em;
+            text-transform: uppercase;
+            color: var(--text-ghost);
+        }
+
+        .scroll-indicator-line {
+            width: 1px;
+            height: 28px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .scroll-indicator-line::after {
+            content: '';
+            position: absolute;
+            top: -100%;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(to bottom, transparent, rgba(255,255,255,0.5));
+            animation: scrollPulse 2s ease-in-out infinite;
+        }
+
+        @keyframes scrollPulse {
+            0% { top: -100%; }
+            50% { top: 100%; }
+            100% { top: 100%; }
+        }
+
+        /* ═══════════════════════════════════════════
+            CORNER FRAME DECORATION
+            ═══════════════════════════════════════════ */
+
+        .frame-corner {
+            position: fixed;
+            width: 32px;
+            height: 32px;
+            z-index: 190;
+            pointer-events: none;
+            opacity: 0.12;
+        }
+
+        .frame-corner--tl {
+            top: 24px;
+            left: 24px;
+            border-top: 1px solid var(--accent-white);
+            border-left: 1px solid var(--accent-white);
+        }
+
+        .frame-corner--tr {
+            top: 24px;
+            right: 24px;
+            border-top: 1px solid var(--accent-white);
+            border-right: 1px solid var(--accent-white);
+        }
+
+        .frame-corner--bl {
+            bottom: 24px;
+            left: 24px;
+            border-bottom: 1px solid var(--accent-white);
+            border-left: 1px solid var(--accent-white);
+        }
+
+        .frame-corner--br {
+            bottom: 24px;
+            right: 24px;
+            border-bottom: 1px solid var(--accent-white);
+            border-right: 1px solid var(--accent-white);
+        }
+
+        @media (max-width: 768px) {
+            header { padding: 20px 24px; }
+            .logo-text { font-size: 0.85rem; }
+            .timeline-nav { right: 20px; }
+            .timeline-label { display: none; }
+            .timeline-line { right: 22.5px; }
+            .section-content { padding: 0 24px 48px 24px; }
+            .section-inner { flex-direction: column; align-items: flex-start; gap: 16px; }
+            .section-meta { text-align: left; }
+            .section-title { font-size: clamp(1.1rem, 5vw, 1.6rem); }
+            .frame-corner, .nav-status { display: none; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Fixed Header -->
+    <header>
+        <a href="#" class="logo-container" id="logoLink">
+            <svg class="logo-icon" viewBox="0 0 220 40" xmlns="http://www.w3.org/2000/svg" aria-label="4LOG logo">
+                <defs>
+                    <style>
+                        .logo-4 { fill: #ff0000; }
+                        .logo-log { fill: #ffffff; font-family: 'Syncopate', sans-serif; font-weight: 700; }
+                    </style>
+                </defs>
+                <text x="0" y="32" class="logo-4" font-size="36">4</text>
+                <text x="48" y="32" class="logo-log" font-size="30">LOG</text>
+            </svg>
+        </a>
+        <div class="nav-status" id="navStatus">The Shadow / 01</div>
+        <button class="sound-toggle" id="soundToggle" type="button" aria-label="Sound off">
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+                <path d="M5 9h4l5-5v16l-5-5H5z" />
+                <path class="sound-off" d="M4.5 4.5l15 15" fill="none" />
+            </svg>
+        </button>
+    </header>
+
+    <!-- Timeline Navigation -->
+    <div class="timeline-line"></div>
+    <nav class="timeline-nav" id="timelineNav">
+        <div class="timeline-item active" onclick="scrollToSection(0)">
+            <div class="timeline-dot"></div>
+            <span class="timeline-label">Shadow</span>
+        </div>
+        <div class="timeline-item" onclick="scrollToSection(1)">
+            <div class="timeline-dot"></div>
+            <span class="timeline-label">Reveal</span>
+        </div>
+        <div class="timeline-item" onclick="scrollToSection(2)">
+            <div class="timeline-dot"></div>
+            <span class="timeline-label">Mindset</span>
+        </div>
+        <div class="timeline-item" onclick="scrollToSection(3)">
+            <div class="timeline-dot"></div>
+            <span class="timeline-label">Noise</span>
+        </div>
+    </nav>
+
+    <!-- Corner Frame Decoration -->
+    <div class="frame-corner frame-corner--tl"></div>
+    <div class="frame-corner frame-corner--tr"></div>
+    <div class="frame-corner frame-corner--bl"></div>
+    <div class="frame-corner frame-corner--br"></div>
+
+    <!-- Scroll Indicator -->
+    <div class="scroll-indicator" id="scrollIndicator">
+        <span class="scroll-indicator-text">Scroll</span>
+        <div class="scroll-indicator-line"></div>
+    </div>
+
+    <!-- MAIN SCROLL CONTAINER -->
+    <div class="scroll-container" id="scrollContainer">
+
+        <!-- SECTION 1 — THE SHADOW -->
+        <section class="section in-view" id="section-0" data-section="shadow">
+            <video id="video-shadow" autoplay muted loop playsinline preload="metadata">
+                <source src="Episode - 01.mp4" type="video/mp4">
+                Your browser does not support the video tag.
+            </video>
+            <div class="section-vignette-top"></div>
+            <div class="section-gradient"></div>
+            <div class="section-content">
+                <div class="section-inner">
+                    <div class="section-info">
+                        <div class="section-index">01 / 04</div>
+                        <h1 class="section-title">The Shadow</h1>
+                        <p class="section-subtitle">Every empire begins in the dark. Before the name, before the noise — there is only the echo of what's coming.</p>
+                    </div>
+                    <div class="section-meta">
+                        <div class="section-meta-label">Mood</div>
+                        <div class="section-meta-value">Mysterious · Ambitious · Expensive</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECTION 2 — THE REVEAL -->
+        <section class="section" id="section-1" data-section="reveal">
+            <video id="video-reveal" autoplay muted loop playsinline preload="metadata">
+                <source src="Episode - 02.mp4" type="video/mp4">
+                Your browser does not support the video tag.
+            </video>
+            <div class="section-vignette-top"></div>
+            <div class="section-gradient"></div>
+            <div class="section-content">
+                <div class="section-inner">
+                    <div class="section-info">
+                        <div class="section-index">02 / 04</div>
+                        <h2 class="section-title">The Reveal</h2>
+                        <p class="section-subtitle">Forged in the fracture. What was hidden now demands to be seen. Power doesn't announce — it arrives.</p>
+                    </div>
+                    <div class="section-meta">
+                        <div class="section-meta-label">Mood</div>
+                        <div class="section-meta-value">Tension · Power · Revelation</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECTION 3 — THE MINDSET -->
+        <section class="section" id="section-2" data-section="mindset">
+            <video id="video-mindset" autoplay muted loop playsinline preload="metadata">
+                <source src="Episode - 03.mp4" type="video/mp4">
+                Your browser does not support the video tag.
+            </video>
+            <div class="section-vignette-top"></div>
+            <div class="section-gradient"></div>
+            <div class="section-content">
+                <div class="section-inner">
+                    <div class="section-info">
+                        <div class="section-index">03 / 04</div>
+                        <h2 class="section-title">The Mindset</h2>
+                        <p class="section-subtitle">Built before it was branded. Late nights, obsession, discipline — the work comes first. The name comes after.</p>
+                    </div>
+                    <div class="section-meta">
+                        <div class="section-meta-label">Mood</div>
+                        <div class="section-meta-value">Discipline · Obsession · Creation</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECTION 4 — BREAK THE NOISE -->
+        <section class="section" id="section-3" data-section="noise">
+            <video id="video-noise" autoplay muted loop playsinline preload="metadata">
+                <source src="Episode - 04.mp4" type="video/mp4">
+                Your browser does not support the video tag.
+            </video>
+            <div class="section-vignette-top"></div>
+            <div class="section-gradient"></div>
+            <div class="section-content">
+                <div class="section-inner">
+                    <div class="section-info">
+                        <div class="section-index">04 / 04</div>
+                        <h2 class="section-title">Break The Noise</h2>
+                        <p class="section-subtitle">Char log kya kahenge — mat soch. The shadows dissolve. The noise fades. What remains is you.</p>
+                    </div>
+                    <div class="section-meta">
+                        <div class="section-meta-label">Mood</div>
+                        <div class="section-meta-value">Fearless · Liberating · Iconic</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </div>
+
+    <!-- JAVASCRIPT — SCROLL ENGINE + NETWORK-AWARE VIDEO FALLBACK -->
+    <script>
+        const container = document.getElementById('scrollContainer');
+        const sections = document.querySelectorAll('.section');
+        const timelineItems = document.querySelectorAll('.timeline-item');
+        const navStatus = document.getElementById('navStatus');
+        const scrollIndicator = document.getElementById('scrollIndicator');
+        const soundToggle = document.getElementById('soundToggle');
+        const allVideos = document.querySelectorAll('video');
+        let userIsScrolling = false;
+        let userScrollTimeout = null;
+
+        allVideos.forEach((video, index) => {
+            video.addEventListener('ended', () => {
+                if (userIsScrolling) return;
+                const nextIndex = index + 1;
+                if (nextIndex < sections.length) {
+                    scrollToSection(nextIndex);
+                    updateActiveSection(nextIndex);
+                }
+            });
+        });
+
+        const sectionNames = [
+            'The Shadow / 01',
+            'The Reveal / 02',
+            'The Mindset / 03',
+            'Break The Noise / 04'
+        ];
+
+        let currentIndex = 0;
+
+        function scrollToSection(index) {
+            sections[index].scrollIntoView({ behavior: 'smooth' });
+        }
+
+        function setActiveVideo(index) {
+            sections.forEach((section, i) => {
+                const video = section.querySelector('video');
+                if (!video) return;
+                const isActive = i === index;
+                if (isActive) {
+                    if (soundEnabled) {
+                        video.muted = false;
+                        video.volume = 1;
+                    } else {
+                        video.muted = true;
+                        video.volume = 0;
+                    }
+                    video.play().catch(() => {});
+                } else {
+                    video.muted = true;
+                    video.volume = 0;
+                    video.pause();
+                }
+            });
+        }
+
+        function updateActiveSection(index) {
+            if (index === currentIndex) return;
+            currentIndex = index;
+
+            timelineItems.forEach((item, i) => {
+                item.classList.toggle('active', i === index);
+            });
+
+            navStatus.textContent = sectionNames[index];
+
+            sections.forEach((section, i) => {
+                section.classList.toggle('in-view', i === index);
+            });
+
+            scrollIndicator.classList.toggle('hidden', index > 0);
+            setActiveVideo(index);
+        }
+
+        container.addEventListener('scroll', () => {
+            userIsScrolling = true;
+            clearTimeout(userScrollTimeout);
+            userScrollTimeout = setTimeout(() => {
+                userIsScrolling = false;
+            }, 250);
+
+            const scrollTop = container.scrollTop;
+            const index = Math.round(scrollTop / window.innerHeight);
+            if (index >= 0 && index < sections.length) {
+                updateActiveSection(index);
+            }
+        }, { passive: true });
+
+        let soundEnabled = false;
+        function updateSoundToggle() {
+            if (!soundToggle) return;
+            soundToggle.setAttribute('aria-pressed', soundEnabled ? 'true' : 'false');
+            soundToggle.setAttribute('aria-label', soundEnabled ? 'Sound on' : 'Sound off');
+            soundToggle.classList.toggle('active', soundEnabled);
+            allVideos.forEach(video => {
+                video.muted = !soundEnabled;
+                video.volume = soundEnabled ? 1 : 0;
+            });
+        }
+
+        if (soundToggle) {
+            soundToggle.addEventListener('click', () => {
+                soundEnabled = !soundEnabled;
+                updateSoundToggle();
+                setActiveVideo(currentIndex);
+            });
+        }
+
+        updateSoundToggle();
+        setActiveVideo(currentIndex);
+
+        // Utility
+        function resizeCanvas(canvas) {
+            const dpr = Math.min(window.devicePixelRatio, 2);
+            canvas.width = canvas.offsetWidth * dpr;
+            canvas.height = canvas.offsetHeight * dpr;
+            const ctx = canvas.getContext('2d');
+            ctx.scale(dpr, dpr);
+            return ctx;
+        }
+
+        // ─────────────────────────────────────────
+        // NETWORK-AWARE VIDEO FALLBACK & STREAMING ENGINE
+        // ─────────────────────────────────────────
+        (function initVideoFallback() {
+            const connection = navigator.connection || navigator.mozConnection || navigator.webkitConnection;
+            const isSlowConnection = connection && (connection.saveData || connection.effectiveType === 'slow-2g' || connection.effectiveType === '2g' || connection.effectiveType === '3g');
+
+            const videos = document.querySelectorAll('video');
+
+            videos.forEach((video, index) => {
+                if (isSlowConnection) {
+                    bypassVideoToCanvas(video);
+                    return;
+                }
+
+                const playbackTimeout = setTimeout(() => {
+                    if (video.readyState < 3) {
+                        bypassVideoToCanvas(video);
+                    }
+                }, 3000);
+
+                video.addEventListener('playing', () => {
+                    clearTimeout(playbackTimeout);
+                });
+
+                video.addEventListener('error', () => {
+                    bypassVideoToCanvas(video);
+                });
+            });
+
+            function bypassVideoToCanvas(videoElement) {
+                const section = videoElement.closest('.section');
+                videoElement.remove();
+
+                if (!section.querySelector('canvas')) {
+                    const fallbackCanvas = document.createElement('canvas');
+                    fallbackCanvas.style.cssText = 'position:absolute;top:0;left:0;width:100%;height:100%;z-index:2;';
+                    section.insertBefore(fallbackCanvas, section.firstChild);
+                    initAmbientFallback(fallbackCanvas);
+                }
+            }
+
+            function initAmbientFallback(canvas) {
+                let ctx = resizeCanvas(canvas);
+                let W = canvas.offsetWidth;
+                let H = canvas.offsetHeight;
+
+                // Floating particles for fallback mode
+                const particles = [];
+                for (let i = 0; i < 50; i++) {
+                    particles.push({
+                        x: Math.random() * W,
+                        y: Math.random() * H,
+                        size: Math.random() * 1.5 + 0.3,
+                        speedY: -Math.random() * 0.2 - 0.05,
+                        opacity: Math.random() * 0.4 + 0.05
+                    });
+                }
+
+                let time = 0;
+                function render() {
+                    time += 0.01;
+                    ctx.fillStyle = '#000000';
+                    ctx.fillRect(0, 0, W, H);
+
+                    let grad = ctx.createRadialGradient(W*0.5 + Math.sin(time)*30, H*0.4, 10, W*0.5, H*0.5, W*0.8);
+                    grad.addColorStop(0, 'rgba(255,255,255,0.04)');
+                    grad.addColorStop(1, 'rgba(0,0,0,1)');
+                    ctx.fillStyle = grad;
+                    ctx.fillRect(0, 0, W, H);
+
+                    for (const p of particles) {
+                        p.y += p.speedY;
+                        if (p.y < 0) { p.y = H; p.x = Math.random() * W; }
+                        ctx.beginPath();
+                        ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
+                        ctx.fillStyle = `rgba(255,255,255,${p.opacity})`;
+                        ctx.fill();
+                    }
+
+                    requestAnimationFrame(render);
+                }
+                render();
+
+                window.addEventListener('resize', () => {
+                    ctx = resizeCanvas(canvas);
+                    W = canvas.offsetWidth;
+                    H = canvas.offsetHeight;
+                });
+            }
+        })();
+
+        // ═══════════════════════════════════════════
+        // SECTION 3 — THE MINDSET CANVAS
+        // ═══════════════════════════════════════════
+        (function initMindset() {
+            const canvas = document.getElementById('canvas-mindset');
+            if (!canvas) return;
+            let ctx = resizeCanvas(canvas);
+            let W = canvas.offsetWidth;
+            let H = canvas.offsetHeight;
+
+            const cityLights = [];
+            for (let i = 0; i < 120; i++) {
+                cityLights.push({
+                    x: Math.random() * W,
+                    y: H * 0.15 + Math.random() * H * 0.55,
+                    size: Math.random() * 1.5 + 0.3,
+                    brightness: Math.random(),
+                    flickerSpeed: Math.random() * 0.03 + 0.005,
+                    flickerOffset: Math.random() * Math.PI * 2,
+                    isWindow: Math.random() > 0.3,
+                });
+            }
+
+            const ideas = [];
+            for (let i = 0; i < 30; i++) {
+                ideas.push({
+                    x: Math.random() * W,
+                    y: Math.random() * H,
+                    vx: (Math.random() - 0.5) * 0.4,
+                    vy: (Math.random() - 0.5) * 0.3,
+                    size: Math.random() * 1.2 + 0.3,
+                    opacity: Math.random() * 0.2 + 0.05,
+                });
+            }
+
+            let time = 0;
+            function drawMindset() {
+                time += 0.012;
+                ctx.fillStyle = '#000000';
+                ctx.fillRect(0, 0, W, H);
+
+                // Laptop screen glow
+                const laptopX = W * 0.48;
+                const laptopY = H * 0.72;
+                const screenGlow = ctx.createRadialGradient(laptopX, laptopY, 0, laptopX, laptopY, 180);
+                screenGlow.addColorStop(0, 'rgba(200,210,230,0.06)');
+                screenGlow.addColorStop(1, 'rgba(0,0,0,0)');
+                ctx.fillStyle = screenGlow;
+                ctx.fillRect(laptopX - 200, laptopY - 200, 400, 400);
+
+                for (const idea of ideas) {
+                    idea.x += idea.vx;
+                    idea.y += idea.vy;
+                    if (idea.x < 0 || idea.x > W) idea.vx *= -1;
+                    if (idea.y < 0 || idea.y > H) idea.vy *= -1;
+
+                    ctx.beginPath();
+                    ctx.arc(idea.x, idea.y, idea.size, 0, Math.PI * 2);
+                    ctx.fillStyle = `rgba(255,255,255,${idea.opacity})`;
+                    ctx.fill();
+                }
+
+                requestAnimationFrame(drawMindset);
+            }
+
+            window.addEventListener('resize', () => {
+                ctx = resizeCanvas(canvas);
+                W = canvas.offsetWidth;
+                H = canvas.offsetHeight;
+            });
+
+            drawMindset();
+        })();
+
+        // ═══════════════════════════════════════════
+        // SECTION 4 — BREAK THE NOISE CANVAS
+        // ═══════════════════════════════════════════
+        (function initNoise() {
+            const canvas = document.getElementById('canvas-noise');
+            if (!canvas) return;
+            let ctx = resizeCanvas(canvas);
+            let W = canvas.offsetWidth;
+            let H = canvas.offsetHeight;
+
+            const libParticles = [];
+            let time = 0;
+
+            function drawNoise() {
+                time += 0.01;
+                ctx.fillStyle = '#000000';
+                ctx.fillRect(0, 0, W, H);
+
+                const cx = W * 0.5;
+                const cy = H * 0.48;
+                const cycle = (time * 0.08) % 1;
+
+                if (cycle > 0.5 && cycle < 0.7) {
+                    for (let p = 0; p < 2; p++) {
+                        libParticles.push({
+                            x: cx + (Math.random() - 0.5) * 50,
+                            y: cy + (Math.random() - 0.5) * 50,
+                            vx: (Math.random() - 0.5) * 1.5,
+                            vy: -Math.random() * 1.5 - 0.5,
+                            size: Math.random() * 1.5 + 0.3,
+                            life: 1,
+                            decay: Math.random() * 0.008 + 0.003,
+                        });
+                    }
+                }
+
+                for (let i = libParticles.length - 1; i >= 0; i--) {
+                    const p = libParticles[i];
+                    p.x += p.vx;
+                    p.y += p.vy;
+                    p.life -= p.decay;
+
+                    if (p.life <= 0) {
+                        libParticles.splice(i, 1);
+                        continue;
+                    }
+
+                    ctx.beginPath();
+                    ctx.arc(p.x, p.y, p.size * p.life, 0, Math.PI * 2);
+                    ctx.fillStyle = `rgba(255,255,255,${p.life * 0.5})`;
+                    ctx.fill();
+                }
+
+                requestAnimationFrame(drawNoise);
+            }
+
+            window.addEventListener('resize', () => {
+                ctx = resizeCanvas(canvas);
+                W = canvas.offsetWidth;
+                H = canvas.offsetHeight;
+            });
+
+            drawNoise();
+        })();
+    </script>
+</body>
+</html>

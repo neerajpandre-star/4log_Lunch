@@ -1,0 +1,30 @@
+{
+  "name": "4log-react",
+  "private": true,
+  "version": "0.0.1",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc && vite build",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "framer-motion": "^11.0.0",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "react-icons": "^4.11.0"
+  },
+  "devDependencies": {
+    "@tailwindcss/cli": "^4.3.1",
+    "@tailwindcss/postcss": "^4.3.1",
+    "@types/node": "^26.1.2",
+    "@types/react": "^18.3.4",
+    "@types/react-dom": "^18.3.0",
+    "@vitejs/plugin-react": "^4.3.1",
+    "autoprefixer": "^10.4.19",
+    "postcss": "^8.4.38",
+    "tailwindcss": "^4.3.1",
+    "typescript": "^5.6.2",
+    "vite": "^5.4.1"
+  }
+}
