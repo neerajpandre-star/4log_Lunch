@@ -1,5 +1,3 @@
-import { is } from "@react-three/fiber/dist/declarations/src/core/utils";
-
 export type Section = {
   id: string;
   sectionName: string;
