@@ -36,32 +36,6 @@ body {
   -moz-osx-font-smoothing: grayscale;
 }
 
-.brand-statement {
-  position: fixed;
-  left: 50%;
-  bottom: 26px;
-  transform: translateX(-50%);
-  z-index: 140;
-  width: min(90vw, 720px);
-  padding: 12px 18px;
-  border: 1px solid rgba(255, 255, 255, 0.14);
-  border-radius: 999px;
-  background: rgba(0, 0, 0, 0.42);
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
-  text-align: center;
-  pointer-events: none;
-}
-
-.brand-statement p {
-  font-family: 'Outfit', sans-serif;
-  font-size: 0.7rem;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-  line-height: 1.5;
-  color: rgba(255, 255, 255, 0.8);
-}
-
 .site-footer {
   position: relative;
   z-index: 20;

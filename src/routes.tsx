@@ -96,7 +96,7 @@ export const routePages: RoutePage[] = [
           <div className="brand-page__eyebrow">About 4LOG</div>
           <h1>What is 4LOG?</h1>
           <p>
-            4LOG is an Indian streetwear clothing brand built for people who do not live their life by other people’s expectations.
+            4LOG is built for people who do not live their life by other people’s expectations.
             It is rooted in individuality, confidence, and the belief that personal identity should not be filtered through fear.
           </p>
           <p>
@@ -129,7 +129,7 @@ export const routePages: RoutePage[] = [
             The brand is more than a label. It is an expression of self-trust. The 4LOG clothing brand turns “log kya kahenge” into a challenge instead of a barrier — a reminder to stay rooted in your own standards.
           </p>
           <p>
-            4LOG is an official Indian clothing brand for people who want to wear their confidence the way they live it.
+            4LOG is for people who want to wear their confidence the way they live it.
             From T-shirts to statement streetwear staples, every piece is made to reflect a mindset: keep moving, keep building, and keep being yourself.
           </p>
           <div className="brand-page__cta-row">

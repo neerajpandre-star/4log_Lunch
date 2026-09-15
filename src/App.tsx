@@ -130,12 +130,6 @@ function HomePage() {
         <TimelineNav sections={sections} currentIndex={currentIndex} onSelectSection={scrollToSection} />
         <ScrollIndicator hidden={currentIndex > 0} />
 
-        <div className="brand-statement" aria-label="4LOG statement">
-          <p>
-            4LOG is an Indian streetwear clothing brand built for people who don&apos;t live by “log kya kahenge”.
-          </p>
-        </div>
-
         <div ref={containerRef} className="scroll-container">
           {sections.map((section, index) => (
             <div key={section.id} ref={sectionRefs[index]}>
@@ -186,7 +180,7 @@ function AboutPage() {
           <div className="brand-page__eyebrow">About 4LOG</div>
           <h1>What is 4LOG?</h1>
           <p>
-            4LOG is an Indian streetwear clothing brand built for people who do not live their life by other people&apos;s expectations.
+            4LOG is built for people who do not live their life by other people&apos;s expectations.
             It is rooted in individuality, confidence, and the belief that personal identity should not be filtered through fear.
           </p>
           <p>
@@ -219,7 +213,7 @@ function AboutPage() {
             The brand is more than a label. It is an expression of self-trust. The 4LOG clothing brand turns “log kya kahenge” into a challenge instead of a barrier — a reminder to stay rooted in your own standards.
           </p>
           <p>
-            4LOG is an official Indian clothing brand for people who want to wear their confidence the way they live it.
+            4LOG is for people who want to wear their confidence the way they live it.
             From T-shirts to statement streetwear staples, every piece is made to reflect a mindset: keep moving, keep building, and keep being yourself.
           </p>
           <div className="brand-page__cta-row">
