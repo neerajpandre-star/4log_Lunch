@@ -114,9 +114,9 @@ const Section = ({ section, index, isActive, soundEnabled, reducedMotion, onJoin
         </video>
       )}
 
-      {!section.imageSrc && (
+      {!section.imageSrc && !videoFailed && (
         <div className={`video-status ${videoReady ? 'is-ready' : ''} ${videoFailed ? 'has-failed' : ''}`} aria-live="polite">
-          {videoFailed ? 'Episode unavailable' : reducedMotion ? 'Motion paused' : 'Loading episode'}
+          {reducedMotion ? 'Motion paused' : 'Loading episode'}
         </div>
       )}
 
