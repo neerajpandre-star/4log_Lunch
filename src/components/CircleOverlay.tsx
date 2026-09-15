@@ -37,7 +37,7 @@ const CircleOverlay = ({ onClose }: CircleOverlayProps) => {
         <p className="circle-overlay__kicker">Invitation only / 001</p>
         <h2 id="circle-title">Welcome to<br /><span>4LOG.</span></h2>
         <p className="circle-overlay__manifesto">Leave your expectations outside.</p>
-        <p className="circle-overlay__copy">Enter your email to receive the first signal when the Circle opens.</p>
+        <p className="circle-overlay__copy">Enter your email to receive the first signal when the Circle of <span className="circle-overlay__manifesto">MISFITS</span> opens.</p>
 
         {submitted ? (
           <div className="circle-overlay__success" role="status">
