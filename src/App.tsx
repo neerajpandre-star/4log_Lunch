@@ -158,7 +158,7 @@ function HomePage() {
           <div className="site-footer__brand">
             <a href="/" aria-label="4LOG home">4LOG</a>
           </div>
-          <div className="site-footer__meta">Streetwear Clothing Brand</div>
+          <div className="site-footer__meta"> Clothing Brand</div>
           <div className="site-footer__meta">India</div>
           <div className="site-footer__links">
             <a href="/about">About 4LOG</a>
@@ -193,7 +193,7 @@ function AboutPage() {
           </p>
           <p>
             <strong>Why was 4LOG created?</strong> Because confidence should not be borrowed. The goal was to build a 4LOG brand that feels honest, sharp, and true to the people who wear it.
-            That is why 4LOG streetwear focuses on attitude, energy, and self-expression rather than trends for trends&apos; sake.
+            That is why 4LOG focuses on attitude, energy, and self-expression rather than trends for trends&apos; sake.
           </p>
           <div className="brand-page__grid">
             <div>
@@ -203,9 +203,9 @@ function AboutPage() {
               </p>
             </div>
             <div>
-              <h2>Streetwear identity</h2>
+              <h2>4LOG identity</h2>
               <p>
-                4LOG streetwear is rooted in Indian culture, modern attitude, and a refusal to be dictated by outside noise. The brand blends comfort, edge, and everyday wearability into statement pieces.
+                4LOG  is rooted in Indian culture, modern attitude, and a refusal to be dictated by outside noise. The brand blends comfort, edge, and everyday wearability into statement pieces.
               </p>
             </div>
           </div>
@@ -214,7 +214,7 @@ function AboutPage() {
           </p>
           <p>
             4LOG is for people who want to wear their confidence the way they live it.
-            From T-shirts to statement streetwear staples, every piece is made to reflect a mindset: keep moving, keep building, and keep being yourself.
+            From T-shirts to statement staples, every piece is made to reflect a mindset: keep moving, keep building, and keep being yourself.
           </p>
           <div className="brand-page__cta-row">
             <a href="/" className="brand-page__link">Visit the official 4LOG homepage</a>
@@ -231,11 +231,11 @@ function CollectionPage() {
     <>
       <Seo
         page={{
-          title: '4LOG T-Shirts | Official 4LOG Streetwear',
-          description: 'Explore official 4LOG T-shirts built for everyday confidence, attitude and self-expression. Discover the 4LOG streetwear collection.',
+          title: '4LOG T-Shirts | Official 4LOG ',
+          description: 'Explore official 4LOG T-shirts built for everyday confidence, attitude and self-expression. Discover the 4LOG  collection.',
           canonical: 'https://4log.in/collections/t-shirts',
-          ogTitle: '4LOG T-Shirts | Official 4LOG Streetwear',
-          ogDescription: 'Explore official 4LOG T-shirts built for everyday confidence, attitude and self-expression. Discover the 4LOG streetwear collection.',
+          ogTitle: '4LOG T-Shirts | Official 4LOG ',
+          ogDescription: 'Explore official 4LOG T-shirts built for everyday confidence, attitude and self-expression. Discover the 4LOG  collection.',
           ogImage: 'https://4log.in/og-4log.svg',
         }}
       />
@@ -245,10 +245,10 @@ function CollectionPage() {
           <div className="brand-page__eyebrow">4LOG Collection</div>
           <h1>4LOG T-Shirts</h1>
           <p>
-            4LOG T-shirts are built for people who want streetwear with attitude. Each drop is designed to feel sharp, expressive, and easy to wear while carrying a strong identity.
+            4LOG T-shirts are built for people who want thought with attitude. Each drop is designed to feel sharp, expressive, and easy to wear while carrying a strong identity.
           </p>
           <p>
-            From everyday staples to statement pieces, 4LOG clothing brings together comfort, confidence, and the unmistakable energy of Indian streetwear.
+            From everyday staples to statement pieces, 4LOG clothing brings together comfort, confidence, and the unmistakable energy of Indian emotion.
           </p>
           <div className="brand-page__cta-row">
             <a href="/" className="brand-page__link">Official 4LOG home</a>
