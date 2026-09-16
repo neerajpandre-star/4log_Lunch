@@ -60,10 +60,10 @@ const organizationSchema = {
 };
 
 const homeSeo = {
-  title: '4LOG — Do It Anyway | From Talk to Takeover',
+  title: '4LOG. Do It Anyway.From Talk to Takeover',
   description: '4LOG is an Indian streetwear clothing brand built around individuality, confidence and ignoring “log kya kahenge”. Explore official 4LOG T-shirts and collections.',
   canonical: `${BASE_URL}/`,
-  ogTitle: '4LOG — Do It Anyway | From Talk to Takeover',
+  ogTitle: '4LOG. Do It Anyway.From Talk to Takeover',
   ogDescription: '4LOG is an Indian streetwear clothing brand built around individuality, confidence and ignoring “log kya kahenge”. Explore official 4LOG T-shirts and collections.',
   ogImage: `${BASE_URL}/og-4log.svg`,
   structuredData: [brandSchema, websiteSchema, organizationSchema],
