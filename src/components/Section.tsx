@@ -26,6 +26,22 @@ const Section = ({ section, index, isActive, soundEnabled, reducedMotion, onJoin
   const [videoReady, setVideoReady] = useState(false);
   const [videoFailed, setVideoFailed] = useState(false);
   const [showEndCta, setShowEndCta] = useState(false);
+  const [isMobile, setIsMobile] = useState(() =>
+    typeof window !== 'undefined' ? window.innerWidth <= 768 : false
+  );
+
+  useEffect(() => {
+    if (typeof window === 'undefined') return;
+    const mql = window.matchMedia('(max-width: 768px)');
+    const handleMediaChange = (e: MediaQueryListEvent) => {
+      setIsMobile(e.matches);
+    };
+    setIsMobile(mql.matches);
+    mql.addEventListener('change', handleMediaChange);
+    return () => mql.removeEventListener('change', handleMediaChange);
+  }, []);
+
+  const activeVideoSrc = isMobile && section.mobileVideoSrc ? section.mobileVideoSrc : section.videoSrc;
 
   useEffect(() => {
     if (section.imageSrc) {
@@ -53,7 +69,7 @@ const Section = ({ section, index, isActive, soundEnabled, reducedMotion, onJoin
       setShowEndCta(false);
       if (!reducedMotion) video.currentTime = 0;
     }
-  }, [isActive, soundEnabled, reducedMotion, section.imageSrc]);
+  }, [isActive, soundEnabled, reducedMotion, section.imageSrc, activeVideoSrc]);
 
   const isFinalSection = index === sections.length - 1;
   const isFirstSection = index === 0;
@@ -95,7 +111,9 @@ const Section = ({ section, index, isActive, soundEnabled, reducedMotion, onJoin
         </picture>
       ) : (
         <video
+          key={activeVideoSrc}
           ref={videoRef}
+          src={activeVideoSrc}
           data-section-index={index}
           className="section-video"
           autoPlay={!reducedMotion && isActive}
