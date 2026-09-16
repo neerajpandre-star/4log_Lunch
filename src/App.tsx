@@ -10,18 +10,18 @@ import { Seo } from './seo';
 import './index.css';
 
 const homePageSeo = {
-  title: '4LOG. Do It Anyway.From Talk to Takeover',
-  description: '4LOG is an Indian streetwear clothing brand built around individuality, confidence and ignoring “log kya kahenge”. Explore official 4LOG T-shirts and collections.',
+  title: '4LOG. Do It Anyway. From Talk to Takeover.',
+  description: '4LOG. Do It Anyway. From Talk to Takeover. Built for people who stop listening to the noise, take action, and create their own path.',
   canonical: 'https://4log.in/',
-  ogTitle: '4LOG. Do It Anyway.From Talk to Takeover',
-  ogDescription: '4LOG is an Indian streetwear clothing brand built around individuality, confidence and ignoring “log kya kahenge”. Explore official 4LOG T-shirts and collections.',
+  ogTitle: '4LOG. Do It Anyway. From Talk to Takeover.',
+  ogDescription: 'From Talk to Takeover. Do It Anyway.',
   ogImage: 'https://4log.in/og-4log.svg',
   structuredData: [
     {
       '@context': 'https://schema.org',
       '@type': 'Brand',
       name: '4LOG',
-      description: 'A streetwear clothing brand focused on individuality and self-expression.',
+      description: '4LOG. Do It Anyway. From Talk to Takeover. Built for people who stop listening to the noise, take action, and create their own path.',
       url: 'https://4log.in/',
       logo: 'https://4log.in/4log-white.png',
     },
@@ -31,7 +31,7 @@ const homePageSeo = {
       name: '4LOG',
       alternateName: '4LOG Clothing',
       url: 'https://4log.in/',
-      description: '4LOG is an Indian streetwear clothing brand built around individuality, confidence and self-expression.',
+      description: '4LOG. Do It Anyway. From Talk to Takeover. Built for people who stop listening to the noise, take action, and create their own path.',
       publisher: {
         '@type': 'Organization',
         name: '4LOG',
@@ -43,7 +43,7 @@ const homePageSeo = {
       '@context': 'https://schema.org',
       '@type': 'Organization',
       name: '4LOG',
-      description: 'A streetwear clothing brand focused on individuality and self-expression.',
+      description: '4LOG. Do It Anyway. From Talk to Takeover. Built for people who stop listening to the noise, take action, and create their own path.',
       url: 'https://4log.in/',
       logo: 'https://4log.in/4log-white.png',
       sameAs: [
