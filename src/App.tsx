@@ -10,18 +10,18 @@ import { Seo } from './seo';
 import './index.css';
 
 const homePageSeo = {
-  title: '4LOG. Do It Anyway. From Talk to Takeover.',
-  description: '4LOG. Do It Anyway. From Talk to Takeover. Built for people who stop listening to the noise, take action, and create their own path.',
+  title: '4LOG — Do It Anyway. From Talk to Takeover.',
+  description: '4LOG is a community built for people who choose action over opinions. Do it anyway. From talk to takeover.',
   canonical: 'https://4log.in/',
-  ogTitle: '4LOG. Do It Anyway. From Talk to Takeover.',
-  ogDescription: 'From Talk to Takeover. Do It Anyway.',
+  ogTitle: '4LOG — Do It Anyway. From Talk to Takeover.',
+  ogDescription: '4LOG is a community built for people who choose action over opinions. Do it anyway. From talk to takeover.',
   ogImage: 'https://4log.in/og-4log.svg',
   structuredData: [
     {
       '@context': 'https://schema.org',
       '@type': 'Brand',
       name: '4LOG',
-      description: '4LOG. Do It Anyway. From Talk to Takeover. Built for people who stop listening to the noise, take action, and create their own path.',
+      description: '4LOG is a community built for people who choose action over opinions. Do it anyway. From talk to takeover.',
       url: 'https://4log.in/',
       logo: 'https://4log.in/4log-white.png',
     },
@@ -29,9 +29,8 @@ const homePageSeo = {
       '@context': 'https://schema.org',
       '@type': 'WebSite',
       name: '4LOG',
-      alternateName: '4LOG Clothing',
       url: 'https://4log.in/',
-      description: '4LOG. Do It Anyway. From Talk to Takeover. Built for people who stop listening to the noise, take action, and create their own path.',
+      description: '4LOG is a community built for people who choose action over opinions. Do it anyway. From talk to takeover.',
       publisher: {
         '@type': 'Organization',
         name: '4LOG',
@@ -43,7 +42,7 @@ const homePageSeo = {
       '@context': 'https://schema.org',
       '@type': 'Organization',
       name: '4LOG',
-      description: '4LOG. Do It Anyway. From Talk to Takeover. Built for people who stop listening to the noise, take action, and create their own path.',
+      description: '4LOG is a community built for people who choose action over opinions. Do it anyway. From talk to takeover.',
       url: 'https://4log.in/',
       logo: 'https://4log.in/4log-white.png',
       sameAs: [
@@ -58,11 +57,11 @@ const homePageSeo = {
 };
 
 const aboutPageSeo = {
-  title: 'About 4LOG | Indian Streetwear Clothing Brand',
-  description: 'Learn what 4LOG is, why it was created, and how the 4LOG clothing brand reflects individuality, confidence and self-expression through streetwear.',
+  title: 'About 4LOG — Do It Anyway',
+  description: 'Learn what 4LOG stands for, why it was created, and how it champions individuality, courage, and self-expression for those who choose action over opinions.',
   canonical: 'https://4log.in/about',
-  ogTitle: 'About 4LOG | Indian Streetwear Clothing Brand',
-  ogDescription: 'Learn what 4LOG is, why it was created, and how the 4LOG clothing brand reflects individuality, confidence and self-expression through streetwear.',
+  ogTitle: 'About 4LOG — Do It Anyway',
+  ogDescription: 'Learn what 4LOG stands for, why it was created, and how it champions individuality, courage, and self-expression for those who choose action over opinions.',
   ogImage: 'https://4log.in/og-4log.svg',
 };
 
@@ -219,11 +218,11 @@ function CollectionPage() {
     <>
       <Seo
         page={{
-          title: '4LOG T-Shirts | Official 4LOG ',
-          description: 'Explore official 4LOG T-shirts built for everyday confidence, attitude and self-expression. Discover the 4LOG  collection.',
+          title: '4LOG Collection — Do It Anyway',
+          description: 'Explore official 4LOG releases built for everyday confidence, individuality, and self-expression.',
           canonical: 'https://4log.in/collections/t-shirts',
-          ogTitle: '4LOG T-Shirts | Official 4LOG ',
-          ogDescription: 'Explore official 4LOG T-shirts built for everyday confidence, attitude and self-expression. Discover the 4LOG  collection.',
+          ogTitle: '4LOG Collection — Do It Anyway',
+          ogDescription: 'Explore official 4LOG releases built for everyday confidence, individuality, and self-expression.',
           ogImage: 'https://4log.in/og-4log.svg',
         }}
       />
