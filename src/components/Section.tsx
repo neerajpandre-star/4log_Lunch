@@ -171,7 +171,16 @@ const Section = ({ section, index, isActive, soundEnabled, reducedMotion, onJoin
           )}
           {isFinalSection ? (
             <>
-              <a className="launch-cta__link" href="#" aria-label="Join the community" style={{ marginRight: '16px' }}>
+              <a
+                className="launch-cta__link"
+                href="#join-circle"
+                onClick={(e) => {
+                  e.preventDefault();
+                  onNextSection();
+                }}
+                aria-label="Join the community"
+                style={{ marginRight: '16px' }}
+              >
                 {ctaLabel}
               </a>
               <div className="launch-social-links" aria-label="Follow 4LOG on social media">

@@ -5,6 +5,7 @@ import ScrollIndicator from './components/ScrollIndicator';
 import Section from './components/Section';
 import CircleOverlay from './components/CircleOverlay';
 import CharacterQuiz from './components/CharacterQuiz';
+import JoinCircle from './components/JoinCircle';
 import { sections } from './data/sections';
 import { Seo } from './seo';
 import './index.css';
@@ -74,6 +75,7 @@ function getCurrentPath() {
 
 function HomePage() {
   const containerRef = useRef<HTMLDivElement | null>(null);
+  const joinCircleRef = useRef<HTMLDivElement | null>(null);
   const currentIndexRef = useRef(0);
   const sectionRefs = useMemo(() => sections.map(() => createRef<HTMLDivElement>()), []);
   const [currentIndex, setCurrentIndex] = useState(0);
@@ -92,7 +94,8 @@ function HomePage() {
 
       frameId = window.requestAnimationFrame(() => {
         const index = Math.round(container.scrollTop / container.clientHeight);
-        if (index >= 0 && index < sections.length && index !== currentIndexRef.current) {
+        const maxIndex = sections.length;
+        if (index >= 0 && index <= maxIndex && index !== currentIndexRef.current) {
           currentIndexRef.current = index;
           setCurrentIndex(index);
         }
@@ -118,14 +121,20 @@ function HomePage() {
   }, []);
 
   const scrollToSection = (index: number) => {
+    if (index >= sections.length) {
+      joinCircleRef.current?.scrollIntoView({ behavior: 'smooth' });
+      return;
+    }
     sectionRefs[index]?.current?.scrollIntoView({ behavior: 'smooth' });
   };
+
+  const activeSectionName = currentIndex < sections.length ? sections[currentIndex]?.sectionName : 'The Circle';
 
   return (
     <>
       <Seo page={homePageSeo} />
       <div className="app bg-void text-primary">
-        <Header sectionName={sections[currentIndex]?.sectionName} soundEnabled={soundEnabled} onToggleSound={() => setSoundEnabled((prev) => !prev)} />
+        <Header sectionName={activeSectionName} soundEnabled={soundEnabled} onToggleSound={() => setSoundEnabled((prev) => !prev)} />
         <TimelineNav sections={sections} currentIndex={currentIndex} onSelectSection={scrollToSection} />
         <ScrollIndicator hidden={currentIndex > 0} />
 
@@ -144,6 +153,10 @@ function HomePage() {
               />
             </div>
           ))}
+
+          <div ref={joinCircleRef}>
+            <JoinCircle />
+          </div>
         </div>
 
         <div className="frame-corner frame-corner--tl" />
