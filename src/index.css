@@ -948,6 +948,11 @@ header {
   text-transform: uppercase;
 }
 
+.circle-overlay__duplicate {
+  border-left-color: rgba(255, 255, 255, 0.5);
+  background: rgba(255, 255, 255, 0.05);
+}
+
 .character-quiz {
   position: fixed;
   inset: 0;
