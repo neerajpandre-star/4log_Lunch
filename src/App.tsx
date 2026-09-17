@@ -153,18 +153,6 @@ function HomePage() {
         <div className="frame-corner frame-corner--br" />
         {circleOpen && <CircleOverlay onClose={() => setCircleOpen(false)} />}
         {quizOpen && <CharacterQuiz onClose={() => setQuizOpen(false)} />}
-
-        <footer className="site-footer">
-          <div className="site-footer__brand">
-            <a href="/" aria-label="4LOG home">4LOG</a>
-          </div>
-          <div className="site-footer__meta"> Clothing Brand</div>
-          <div className="site-footer__meta">India</div>
-          <div className="site-footer__links">
-            <a href="/about">About 4LOG</a>
-            <a href="/collections/t-shirts">4LOG T-shirts</a>
-          </div>
-        </footer>
       </div>
     </>
   );
