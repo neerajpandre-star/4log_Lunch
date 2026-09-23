@@ -5,7 +5,11 @@ import ScrollIndicator from './components/ScrollIndicator';
 import Section from './components/Section';
 import CircleOverlay from './components/CircleOverlay';
 import CharacterQuiz from './components/CharacterQuiz';
+import CollectionMenu from './components/CollectionMenu';
+import LoadingScreen from './components/LoadingScreen';
+import NivoraPage from './pages/NivoraPage';
 import { sections } from './data/sections';
+import { collections } from './data/collections';
 import { Seo } from './seo';
 import './index.css';
 
@@ -69,11 +73,24 @@ const aboutPageSeo = {
 function getCurrentPath() {
   const pathname = window.location.pathname.replace(/\/+$/, '') || '/';
   if (pathname === '/about') return '/about';
+  if (pathname === '/timeline') return '/timeline';
+  if (pathname === '/nivora') return '/nivora';
   if (pathname.startsWith('/collections')) return pathname;
   return '/';
 }
 
-function HomePage() {
+type NavProps = {
+  isMenuOpen: boolean;
+  onToggleMenu: () => void;
+};
+
+type HomePageProps = {
+  isMenuOpen: boolean;
+  onToggleMenu: () => void;
+  isLoaded: boolean;
+};
+
+function HomePage({ isMenuOpen, onToggleMenu, isLoaded }: HomePageProps) {
   const containerRef = useRef<HTMLDivElement | null>(null);
   const currentIndexRef = useRef(0);
   const sectionRefs = useMemo(() => sections.map(() => createRef<HTMLDivElement>()), []);
@@ -82,7 +99,23 @@ function HomePage() {
   const [reducedMotion, setReducedMotion] = useState(false);
   const [circleOpen, setCircleOpen] = useState(false);
   const [quizOpen, setQuizOpen] = useState(false);
+  const [introCompleted, setIntroCompleted] = useState(false);
+  const [, setIntroVideoEnded] = useState(false);
 
+  const scrollToSection = (index: number) => {
+    if (index >= 0 && index < sections.length) {
+      sectionRefs[index]?.current?.scrollIntoView({ behavior: 'smooth' });
+      setCurrentIndex(index);
+      currentIndexRef.current = index;
+    }
+  };
+
+  const handleEnterJourney = (targetSection = 1) => {
+    setIntroCompleted(true);
+    scrollToSection(targetSection);
+  };
+
+  // Track active section on scroll
   useEffect(() => {
     const container = containerRef.current;
     if (!container) return;
@@ -92,20 +125,23 @@ function HomePage() {
       if (frameId) return;
 
       frameId = window.requestAnimationFrame(() => {
-        const index = Math.round(container.scrollTop / container.clientHeight);
+        const height = container.clientHeight || window.innerHeight;
+        const index = Math.round(container.scrollTop / height);
         if (index >= 0 && index < sections.length && index !== currentIndexRef.current) {
           currentIndexRef.current = index;
           setCurrentIndex(index);
+          if (index > 0) {
+            setIntroCompleted(true);
+          }
         }
         frameId = 0;
       });
     };
 
-    handleScroll();
     container.addEventListener('scroll', handleScroll, { passive: true });
     return () => {
       container.removeEventListener('scroll', handleScroll);
-      window.cancelAnimationFrame(frameId);
+      if (frameId) window.cancelAnimationFrame(frameId);
     };
   }, []);
 
@@ -118,17 +154,29 @@ function HomePage() {
     return () => query.removeEventListener('change', updatePreference);
   }, []);
 
-  const scrollToSection = (index: number) => {
-    sectionRefs[index]?.current?.scrollIntoView({ behavior: 'smooth' });
-  };
-
   return (
     <>
       <Seo page={homePageSeo} />
       <div className="app bg-void text-primary">
-        <Header sectionName={sections[currentIndex]?.sectionName} soundEnabled={soundEnabled} onToggleSound={() => setSoundEnabled((prev) => !prev)} />
-        <TimelineNav sections={sections} currentIndex={currentIndex} onSelectSection={scrollToSection} />
-        <ScrollIndicator hidden={currentIndex > 0} />
+        <Header
+          isMenuOpen={isMenuOpen}
+          onToggleMenu={onToggleMenu}
+          soundEnabled={soundEnabled}
+          onToggleSound={() => setSoundEnabled((prev) => !prev)}
+        />
+
+        <TimelineNav
+          sections={sections}
+          currentIndex={currentIndex}
+          onSelectSection={(index) => {
+            scrollToSection(index);
+          }}
+        />
+
+        <ScrollIndicator
+          hidden={currentIndex >= sections.length - 1}
+          onClick={() => scrollToSection(currentIndex + 1)}
+        />
 
         <div ref={containerRef} className="scroll-container">
           {sections.map((section, index) => (
@@ -136,12 +184,21 @@ function HomePage() {
               <Section
                 section={section}
                 index={index}
-                isActive={index === currentIndex}
+                isActive={isLoaded && index === currentIndex}
                 soundEnabled={soundEnabled}
                 reducedMotion={reducedMotion}
                 onJoinCircle={() => setCircleOpen(true)}
                 onFindCharacter={() => setQuizOpen(true)}
-                onNextSection={() => scrollToSection(index + 1)}
+                onNextSection={() => {
+                  if (index === 0) {
+                    handleEnterJourney(1);
+                  } else {
+                    scrollToSection(index + 1);
+                  }
+                }}
+                introCompleted={introCompleted}
+                onVideoEnd={() => setIntroVideoEnded(true)}
+                onIntroComplete={() => handleEnterJourney(1)}
               />
             </div>
           ))}
@@ -153,29 +210,17 @@ function HomePage() {
         <div className="frame-corner frame-corner--br" />
         {circleOpen && <CircleOverlay onClose={() => setCircleOpen(false)} />}
         {quizOpen && <CharacterQuiz onClose={() => setQuizOpen(false)} />}
-
-        <footer className="site-footer">
-          <div className="site-footer__brand">
-            <a href="/" aria-label="4LOG home">4LOG</a>
-          </div>
-          <div className="site-footer__meta"> Clothing Brand</div>
-          <div className="site-footer__meta">India</div>
-          <div className="site-footer__links">
-            <a href="/about">About 4LOG</a>
-            <a href="/collections/t-shirts">4LOG T-shirts</a>
-          </div>
-        </footer>
       </div>
     </>
   );
 }
 
-function AboutPage() {
+function AboutPage({ isMenuOpen, onToggleMenu }: NavProps) {
   return (
     <>
       <Seo page={aboutPageSeo} />
       <div className="page-shell page-shell--about">
-        <Header sectionName="About 4LOG" soundEnabled={false} onToggleSound={() => undefined} />
+        <Header isMenuOpen={isMenuOpen} onToggleMenu={onToggleMenu} soundEnabled={false} onToggleSound={() => undefined} />
         <main className="brand-page" aria-label="About 4LOG">
           <div className="brand-page__eyebrow">About 4LOG</div>
           <h1>What is 4LOG?</h1>
@@ -205,7 +250,7 @@ function AboutPage() {
             <div>
               <h2>4LOG identity</h2>
               <p>
-                4LOG  is rooted in Indian culture, modern attitude, and a refusal to be dictated by outside noise. The brand blends comfort, edge, and everyday wearability into statement pieces.
+                4LOG is rooted in Indian culture, modern attitude, and a refusal to be dictated by outside noise. The brand blends comfort, edge, and everyday wearability into statement pieces.
               </p>
             </div>
           </div>
@@ -218,7 +263,9 @@ function AboutPage() {
           </p>
           <div className="brand-page__cta-row">
             <a href="/" className="brand-page__link">Visit the official 4LOG homepage</a>
-            <a href="/collections/t-shirts" className="brand-page__link">Explore 4LOG T-shirts</a>
+            <button type="button" className="brand-page__link" onClick={onToggleMenu} style={{ cursor: 'pointer' }}>
+              Explore All Collections
+            </button>
           </div>
         </main>
       </div>
@@ -226,33 +273,64 @@ function AboutPage() {
   );
 }
 
-function CollectionPage() {
+type CollectionPageProps = NavProps & {
+  path: string;
+};
+
+function CollectionPage({ path, isMenuOpen, onToggleMenu }: CollectionPageProps) {
+  const collection = collections.find((c) => c.href === path) || collections[0];
+  const collectionSeo = {
+    title: `${collection.name} | 4LOG Collections`,
+    description: `${collection.description} Explore the official ${collection.name} collection from 4LOG.`,
+    canonical: `https://4log.in${collection.href}`,
+    ogTitle: `${collection.name} | 4LOG Collections`,
+    ogDescription: collection.description,
+    ogImage: collection.image,
+  };
+
   return (
     <>
-      <Seo
-        page={{
-          title: '4LOG T-Shirts | Official 4LOG ',
-          description: 'Explore official 4LOG T-shirts built for everyday confidence, attitude and self-expression. Discover the 4LOG  collection.',
-          canonical: 'https://4log.in/collections/t-shirts',
-          ogTitle: '4LOG T-Shirts | Official 4LOG ',
-          ogDescription: 'Explore official 4LOG T-shirts built for everyday confidence, attitude and self-expression. Discover the 4LOG  collection.',
-          ogImage: 'https://4log.in/og-4log.svg',
-        }}
-      />
+      <Seo page={collectionSeo} />
       <div className="page-shell page-shell--collection">
-        <Header sectionName="4LOG T-Shirts" soundEnabled={false} onToggleSound={() => undefined} />
-        <main className="brand-page brand-page--collection" aria-label="4LOG T-shirts collection">
-          <div className="brand-page__eyebrow">4LOG Collection</div>
-          <h1>4LOG T-Shirts</h1>
-          <p>
-            4LOG T-shirts are built for people who want thought with attitude. Each drop is designed to feel sharp, expressive, and easy to wear while carrying a strong identity.
+        <Header isMenuOpen={isMenuOpen} onToggleMenu={onToggleMenu} soundEnabled={false} onToggleSound={() => undefined} />
+        <main className="brand-page brand-page--collection" aria-label={`${collection.name} collection`}>
+          <div className="brand-page__eyebrow">4LOG // COLLECTION</div>
+          <h1>{collection.name}</h1>
+          <p style={{ fontSize: '1.25rem', color: '#ffffff', fontWeight: 600, marginBottom: '20px' }}>
+            {collection.tagline}
           </p>
-          <p>
-            From everyday staples to statement pieces, 4LOG clothing brings together comfort, confidence, and the unmistakable energy of Indian emotion.
+          <div
+            style={{
+              width: '100%',
+              height: 'clamp(260px, 45vw, 480px)',
+              borderRadius: '20px',
+              overflow: 'hidden',
+              margin: '28px 0',
+              position: 'relative',
+              border: '1px solid rgba(255, 255, 255, 0.1)',
+            }}
+          >
+            <img
+              src={collection.image}
+              alt={collection.name}
+              style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block' }}
+            />
+          </div>
+          <p style={{ fontSize: '1.1rem', lineHeight: '1.8', color: 'rgba(255, 255, 255, 0.85)', maxWidth: '680px' }}>
+            {collection.description}
           </p>
-          <div className="brand-page__cta-row">
-            <a href="/" className="brand-page__link">Official 4LOG home</a>
-            <a href="/about" className="brand-page__link">About 4LOG</a>
+          <div className="brand-page__cta-row" style={{ marginTop: '36px' }}>
+            <a href="/" className="brand-page__link">
+              ← Official 4LOG Home
+            </a>
+            <button
+              type="button"
+              className="brand-page__link"
+              onClick={onToggleMenu}
+              style={{ cursor: 'pointer' }}
+            >
+              Browse All Collections →
+            </button>
           </div>
         </main>
       </div>
@@ -262,9 +340,21 @@ function CollectionPage() {
 
 function App() {
   const [currentPath, setCurrentPath] = useState(getCurrentPath);
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
+
+  const handleSelectCollection = (href: string) => {
+    setIsMenuOpen(false);
+    window.history.pushState({}, '', href);
+    setCurrentPath(href);
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
 
   useEffect(() => {
-    const handlePathChange = () => setCurrentPath(getCurrentPath());
+    const handlePathChange = () => {
+      setCurrentPath(getCurrentPath());
+      setIsMenuOpen(false);
+    };
     const handleAnchorClick = (event: MouseEvent) => {
       const target = event.target as HTMLElement | null;
       const anchor = target?.closest('a');
@@ -286,9 +376,36 @@ function App() {
     };
   }, []);
 
-  if (currentPath === '/about') return <AboutPage />;
-  if (currentPath.startsWith('/collections')) return <CollectionPage />;
-  return <HomePage />;
+  return (
+    <>
+      {isLoading && <LoadingScreen onComplete={() => setIsLoading(false)} />}
+      <CollectionMenu
+        isOpen={isMenuOpen}
+        onClose={() => setIsMenuOpen(false)}
+        onSelectCollection={handleSelectCollection}
+      />
+      {currentPath === '/about' && (
+        <AboutPage isMenuOpen={isMenuOpen} onToggleMenu={() => setIsMenuOpen((prev) => !prev)} />
+      )}
+      {(currentPath === '/nivora' || currentPath === '/collections/nivora') && (
+        <NivoraPage onToggleMenu={() => setIsMenuOpen((prev) => !prev)} />
+      )}
+      {currentPath.startsWith('/collections') && currentPath !== '/collections/nivora' && (
+        <CollectionPage
+          path={currentPath}
+          isMenuOpen={isMenuOpen}
+          onToggleMenu={() => setIsMenuOpen((prev) => !prev)}
+        />
+      )}
+      {(currentPath === '/' || currentPath === '/timeline') && (
+        <HomePage
+          isMenuOpen={isMenuOpen}
+          onToggleMenu={() => setIsMenuOpen((prev) => !prev)}
+          isLoaded={!isLoading}
+        />
+      )}
+    </>
+  );
 }
 
 export default App;
