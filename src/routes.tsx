@@ -23,7 +23,7 @@ const brandSchema = {
   '@context': 'https://schema.org',
   '@type': 'Brand',
   name: '4LOG',
-  description: '4LOG. Do It Anyway. From Talk to Takeover. Built for people who stop listening to the noise, take action, and create their own path.',
+  description: '4LOG is a community built for people who choose action over opinions. Do it anyway. From talk to takeover.',
   url: 'https://4log.in/',
   logo: 'https://4log.in/4log-white.png',
 };
@@ -32,9 +32,8 @@ const websiteSchema = {
   '@context': 'https://schema.org',
   '@type': 'WebSite',
   name: '4LOG',
-  alternateName: '4LOG Clothing',
   url: 'https://4log.in/',
-  description: '4LOG. Do It Anyway. From Talk to Takeover. Built for people who stop listening to the noise, take action, and create their own path.',
+  description: '4LOG is a community built for people who choose action over opinions. Do it anyway. From talk to takeover.',
   publisher: {
     '@type': 'Organization',
     name: '4LOG',
@@ -47,7 +46,7 @@ const organizationSchema = {
   '@context': 'https://schema.org',
   '@type': 'Organization',
   name: '4LOG',
-  description: '4LOG. Do It Anyway. From Talk to Takeover. Built for people who stop listening to the noise, take action, and create their own path.',
+  description: '4LOG is a community built for people who choose action over opinions. Do it anyway. From talk to takeover.',
   url: 'https://4log.in/',
   logo: 'https://4log.in/4log-white.png',
   sameAs: [
@@ -60,21 +59,21 @@ const organizationSchema = {
 };
 
 const homeSeo = {
-  title: '4LOG. Do It Anyway. From Talk to Takeover.',
-  description: '4LOG. Do It Anyway. From Talk to Takeover. Built for people who stop listening to the noise, take action, and create their own path.',
+  title: '4LOG — Do It Anyway. From Talk to Takeover.',
+  description: '4LOG is a community built for people who choose action over opinions. Do it anyway. From talk to takeover.',
   canonical: `${BASE_URL}/`,
-  ogTitle: '4LOG. Do It Anyway. From Talk to Takeover.',
-  ogDescription: 'From Talk to Takeover. Do It Anyway.',
+  ogTitle: '4LOG — Do It Anyway. From Talk to Takeover.',
+  ogDescription: '4LOG is a community built for people who choose action over opinions. Do it anyway. From talk to takeover.',
   ogImage: `${BASE_URL}/og-4log.svg`,
   structuredData: [brandSchema, websiteSchema, organizationSchema],
 };
 
 const aboutSeo = {
-  title: 'About 4LOG | Indian Streetwear Clothing Brand',
-  description: 'Learn what 4LOG is, why it was created, and how the 4LOG clothing brand reflects individuality, confidence and self-expression through streetwear.',
+  title: 'About 4LOG — Do It Anyway',
+  description: 'Learn what 4LOG stands for, why it was created, and how it champions individuality, courage, and self-expression for those who choose action over opinions.',
   canonical: `${BASE_URL}/about`,
-  ogTitle: 'About 4LOG | Indian Streetwear Clothing Brand',
-  ogDescription: 'Learn what 4LOG is, why it was created, and how the 4LOG clothing brand reflects individuality, confidence and self-expression through streetwear.',
+  ogTitle: 'About 4LOG — Do It Anyway',
+  ogDescription: 'Learn what 4LOG stands for, why it was created, and how it champions individuality, courage, and self-expression for those who choose action over opinions.',
   ogImage: `${BASE_URL}/og-4log.svg`,
 };
 

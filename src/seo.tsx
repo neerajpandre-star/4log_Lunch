@@ -61,6 +61,7 @@ export function Seo({ page }: { page: SeoPage }) {
     document.title = page.title;
 
     setMetaTag('meta[name="description"]', { name: 'description' }, page.description);
+    setMetaTag('meta[name="robots"]', { name: 'robots' }, 'index,follow');
     setMetaTag('meta[property="og:title"]', { property: 'og:title' }, page.ogTitle ?? page.title);
     setMetaTag('meta[property="og:description"]', { property: 'og:description' }, page.ogDescription ?? page.description);
     setMetaTag('meta[property="og:url"]', { property: 'og:url' }, page.canonical);
