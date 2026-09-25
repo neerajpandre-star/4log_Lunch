@@ -133,7 +133,7 @@ const Section = ({
     const video = videoRef.current;
     if (!video) return;
 
-    if (isFirstSection) {
+    if (isFirstSection || world) {
       if (!isActive) {
         video.muted = true;
         video.pause();
@@ -142,7 +142,13 @@ const Section = ({
       video.muted = !soundEnabled;
       video.volume = soundEnabled ? 1 : 0;
       video.playbackRate = 1.0;
-      void video.play().catch(() => {});
+      const playPromise = video.play();
+      if (playPromise !== undefined) {
+        playPromise.catch(() => {
+          video.muted = true;
+          void video.play().catch(() => {});
+        });
+      }
       return;
     }
 
@@ -547,10 +553,7 @@ const Section = ({
       window.removeEventListener('touchmove', handleTouchMove);
       window.removeEventListener('keydown', handleKeyDown);
     };
-  }, [isActive, soundEnabled, reducedMotion, section.imageSrc, activeVideoSrc, isFirstSection, introCompleted, onVideoEnd, onIntroComplete, onNextSection]);
-
-  const identityName = index > 0 && index <= 5 ? (section.title || identityNames[index - 1]) : section.title;
-  const identitySlug = section.id === 'intro' ? '' : section.id;
+  }, [isActive, soundEnabled, reducedMotion, section.imageSrc, activeVideoSrc, isFirstSection, introCompleted, world, onVideoEnd, onIntroComplete, onNextSection]);
 
   return (
     <section ref={sectionRef} className={`section ${isActive ? 'in-view' : ''} ${isFinalSection ? 'section--final' : ''}`} id={`section-${index}`} data-section={section.id}>
@@ -562,84 +565,10 @@ const Section = ({
             )}
             <img
               src={section.imageSrc}
-              alt={section.title}
+              alt={section.title || '4LOG'}
               className="section-collection-banner"
             />
           </picture>
-          {world ? (
-            <div className={`world-hero-editorial ${world.themeClass}`} aria-label={`${world.name} Editorial Experience`}>
-              {/* LEFT SIDE EDITORIAL TYPOGRAPHY */}
-              <div className="world-editorial-left">
-                <div className="world-num-row">
-                  <span className="world-num">{world.num}</span>
-                  <span className="world-num-rule" aria-hidden="true" />
-                </div>
-
-                <h1 className="world-headline">{world.name}</h1>
-
-                <div className="world-subhead">
-                  {world.meaningParts ? (
-                    world.meaningParts.map((part, i) => (
-                      <span key={i} className={`world-subhead-part world-subhead-part--${i + 1}`}>
-                        {part}{' '}
-                      </span>
-                    ))
-                  ) : (
-                    world.meaning
-                  )}
-                </div>
-
-                <div className="world-description">
-                  <p className="world-desc-line world-desc-line--1">
-                    {world.descLine1}
-                  </p>
-                  <p className="world-desc-line world-desc-line--2">
-                    {world.descLine2}
-                  </p>
-                </div>
-
-                <a
-                  href={`/collections/${world.slug}`}
-                  className="world-enter-link"
-                  aria-label={`Enter ${world.name} World`}
-                >
-                  <span className="world-enter-text">{world.actionText}</span>
-                  <span className="world-enter-arrow" aria-hidden="true">
-                    <svg width="24" height="12" viewBox="0 0 24 12" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round">
-                      <line x1="0" y1="6" x2="21" y2="6" className="world-enter-arrow-stem" />
-                      <polyline points="15,1 21,6 15,11" className="world-enter-arrow-head" />
-                    </svg>
-                  </span>
-                </a>
-              </div>
-
-              {/* RIGHT SIDE EDITORIAL ATTRIBUTES */}
-              <div className="world-editorial-right" aria-label={`${world.name} Attributes`}>
-                <div className="world-tags-wrapper">
-                  {world.tags.map((tag, idx) => (
-                    <span
-                      key={tag}
-                      className={`world-tag-item world-tag-item--${idx + 1}`}
-                    >
-                      {tag}
-                    </span>
-                  ))}
-                </div>
-                <span
-                  className="world-tag-accent-line"
-                  style={{ '--accent-color': world.accentColor } as React.CSSProperties}
-                  aria-hidden="true"
-                />
-              </div>
-            </div>
-          ) : (
-            <a
-              href={`/collections/${identitySlug}`}
-              className="section-enter-world-hotspot"
-              aria-label={`Enter World ${identityName}`}
-              title={`Enter World ${identityName}`}
-            />
-          )}
         </div>
       ) : (
         <video
@@ -651,6 +580,7 @@ const Section = ({
           autoPlay={!reducedMotion && isActive}
           muted={!soundEnabled || !isActive}
           playsInline
+          loop={!isFirstSection}
           onCanPlay={() => setVideoReady(true)}
           onError={() => {
             setVideoFailed(true);
@@ -705,79 +635,6 @@ const Section = ({
           <source src={section.videoSrc} type="video/mp4" />
           Your browser does not support the video tag.
         </video>
-      )}
-
-      {!isFirstSection && !section.imageSrc && !videoFailed && (
-        <div className={`video-status ${videoReady ? 'is-ready' : ''} ${videoFailed ? 'has-failed' : ''}`} aria-live="polite">
-          {reducedMotion ? 'Motion paused' : 'Loading episode'}
-        </div>
-      )}
-
-      {!section.imageSrc && !isFirstSection && (
-        <>
-          <div className="section-vignette-top" />
-          <div className="section-gradient" />
-        </>
-      )}
-
-      {/* 01 — INTRO SECTION: ENTER THE JOURNEY CTA BUTTON */}
-      {isFirstSection && (
-        <div
-          className={`intro-journey-popup ${isActive ? 'is-visible' : 'is-exiting'}`}
-          aria-label="Enter The Journey"
-        >
-          <button
-            type="button"
-            className="intro-journey-btn"
-            onClick={() => {
-              onIntroComplete?.();
-            }}
-            aria-label="Enter The Journey"
-          >
-            <span className="intro-journey-btn__text">ENTER THE JOURNEY</span>
-            <span className="intro-journey-btn__arrow" aria-hidden="true">
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
-                <path d="M5 12h14" />
-                <path d="M12 5l7 7-7 7" />
-              </svg>
-            </span>
-          </button>
-        </div>
-      )}
-
-      {!isFirstSection && !section.imageSrc && identityName && (
-        <>
-          <div
-            className={`identity-popup ${showEndCta && isActive ? 'is-visible' : 'is-exiting'}`}
-            aria-label={identityName}
-          >
-            <div className="identity-popup__title">{identityName}</div>
-            <a
-              href={`/collections/${identitySlug}`}
-              className="identity-popup__discover"
-              aria-label={`Discover ${identityName}`}
-            >
-              DISCOVER
-            </a>
-          </div>
-
-          {!isFinalSection && (
-            <button
-              type="button"
-              className={`identity-scroll-indicator ${showEndCta && isActive ? 'is-visible' : 'is-exiting'}`}
-              onClick={onNextSection}
-              aria-label="Scroll for more"
-            >
-              <span className="identity-scroll-indicator__text">SCROLL FOR MORE</span>
-              <span className="identity-scroll-indicator__chevron" aria-hidden="true">
-                <svg width="18" height="22" viewBox="0 0 24 28" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
-                  <path d="M6 7l6 6 6-6" />
-                  <path d="M6 15l6 6 6-6" opacity="0.6" />
-                </svg>
-              </span>
-            </button>
-          )}
-        </>
       )}
     </section>
   );

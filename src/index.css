@@ -613,14 +613,193 @@ header.header--hidden {
 
 .world-editorial-left {
   position: absolute;
-  left: clamp(36px, 6.5vw, 110px);
-  top: clamp(22%, 30vh, 36%);
-  max-width: clamp(290px, 34vw, 460px);
+  left: clamp(24px, 5.5vw, 80px);
+  bottom: clamp(90px, 14vh, 140px);
+  top: auto;
+  max-width: clamp(290px, 34vw, 480px);
   display: flex;
   flex-direction: column;
   align-items: flex-start;
   user-select: none;
   z-index: 16;
+}
+
+/* Bottom Center: Discover trigger */
+.world-bottom-discover {
+  position: absolute;
+  bottom: clamp(28px, 4.5vh, 48px);
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 25;
+  pointer-events: auto;
+}
+
+.world-discover-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  color: rgba(255, 255, 255, 0.7);
+  font-size: 11px;
+  letter-spacing: 3px;
+  font-weight: 500;
+  text-transform: uppercase;
+  text-decoration: none;
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  padding: 6px 12px;
+}
+
+.world-discover-btn:hover {
+  color: #ffffff;
+  transform: translateY(2px);
+}
+
+.world-discover-arrow {
+  display: inline-block;
+  font-size: 13px;
+  transition: transform 0.3s ease;
+}
+
+.world-discover-btn:hover .world-discover-arrow {
+  transform: translateY(2px);
+}
+
+/* Bottom Right: Timeline Indicator */
+.world-bottom-progress {
+  position: absolute;
+  bottom: clamp(28px, 4.5vh, 48px);
+  right: clamp(24px, 5vw, 80px);
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  z-index: 25;
+  pointer-events: none;
+  user-select: none;
+}
+
+.world-progress-track {
+  width: clamp(70px, 8vw, 120px);
+  height: 1px;
+  background: rgba(255, 255, 255, 0.22);
+  position: relative;
+}
+
+.world-progress-fill {
+  height: 100%;
+  background: rgba(255, 255, 255, 0.85);
+  transition: width 0.5s ease;
+}
+
+.world-progress-dot {
+  position: absolute;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #ffffff;
+  box-shadow: 0 0 8px rgba(255, 255, 255, 0.9);
+  transition: left 0.5s ease;
+}
+
+.world-progress-label {
+  font-family: 'Outfit', -apple-system, BlinkMacSystemFont, monospace, sans-serif;
+  font-size: 12px;
+  letter-spacing: 2px;
+  color: rgba(255, 255, 255, 0.85);
+}
+
+/* Far Right: Vertical Brand Ethos */
+.world-side-ethos {
+  position: absolute;
+  right: 22px;
+  top: 50%;
+  transform: translateY(-50%);
+  writing-mode: vertical-rl;
+  font-size: 9px;
+  letter-spacing: 3.5px;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.32);
+  pointer-events: none;
+  user-select: none;
+  z-index: 20;
+  display: none;
+}
+
+@media (min-width: 1024px) {
+  .world-side-ethos {
+    display: block;
+  }
+}
+
+/* Below Hero: The 5 Worlds Mini-Preview Dock */
+.world-preview-peek {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  width: 100%;
+  z-index: 24;
+  display: none;
+}
+
+@media (min-width: 768px) {
+  .world-preview-peek {
+    display: flex;
+    justify-content: flex-start;
+  }
+}
+
+.world-preview-peek__trigger {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  padding: 8px 24px 8px clamp(24px, 5.5vw, 80px);
+  background: rgba(5, 5, 5, 0.75);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border: none;
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+  cursor: pointer;
+  color: rgba(255, 255, 255, 0.6);
+  transition: all 0.3s ease;
+}
+
+.world-preview-peek__trigger:hover {
+  background: rgba(5, 5, 5, 0.9);
+  border-top-color: rgba(255, 255, 255, 0.2);
+}
+
+.world-preview-peek__title {
+  font-size: 9px;
+  letter-spacing: 2.5px;
+  text-transform: uppercase;
+  font-weight: 600;
+  color: rgba(255, 255, 255, 0.4);
+}
+
+.world-preview-peek__tabs {
+  display: flex;
+  gap: 14px;
+}
+
+.world-preview-peek__tab {
+  font-size: 10px;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.5);
+  transition: color 0.2s ease;
+}
+
+.world-preview-peek__tab.active {
+  color: #ffffff;
+  font-weight: 600;
+}
+
+.world-preview-peek__tab:hover {
+  color: #ffffff;
 }
 
 /* Mouse Parallax on Desktop */
@@ -3397,9 +3576,9 @@ header.header--hidden {
 
 .hamburger-line {
   display: block;
-  height: 2px;
+  height: 1.5px;
   background-color: var(--text-primary);
-  border-radius: 2px;
+  border-radius: 1px;
   transform: none !important;
 }
 
@@ -3408,7 +3587,11 @@ header.header--hidden {
 }
 
 .hamburger-line.line-2 {
-  width: 16px;
+  width: 22px;
+}
+
+.hamburger-line.line-3 {
+  width: 22px;
 }
 
 /* Dark Translucent Backdrop Overlay with subtle blur */

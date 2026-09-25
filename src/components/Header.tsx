@@ -26,9 +26,10 @@ export default function Header({
             onClick={onToggleMenu}
             id="hamburgerBtn"
           >
-            <div className="w-6 h-6 translate-x-5 flex flex-col justify-center items-start gap-[6px]">
+            <div className="w-6 h-6 translate-x-5 flex flex-col justify-center items-start gap-[5px]">
               <span className="hamburger-line line-1" />
               <span className="hamburger-line line-2" />
+              <span className="hamburger-line line-3" />
             </div>
           </button>
         </div>
@@ -43,13 +44,22 @@ export default function Header({
             <img
               src="/4log-logo.svg"
               alt="4LOG"
-              className="w-[88px] md:w-[105px] h-auto object-contain block"
+              className="w-[88px] md:w-[110px] h-auto object-contain block"
             />
           </a>
         </div>
 
         {/* RIGHT: SOUND / ACTIONS (Maintains balance without displacing centered logo) */}
-        <div className="flex items-center justify-end z-20 pr-10 sm:pr-16">
+        <div className="flex items-center justify-end gap-3 sm:gap-4 z-20 pr-6 sm:pr-12 md:pr-16">
+          <button
+            type="button"
+            onClick={onToggleMenu}
+            className="hidden md:inline-flex items-center justify-center h-[36px] px-4 rounded-[20px] border border-white/40 hover:border-white text-white/90 hover:text-white text-[10px] tracking-[1.5px] uppercase font-medium transition-all duration-300 backdrop-blur-[2px] hover:bg-white/5 cursor-pointer bg-transparent"
+            aria-label="Join The Circle"
+          >
+            JOIN THE CIRCLE
+          </button>
+
           {onToggleSound ? (
             <button
               type="button"
