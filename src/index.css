@@ -449,6 +449,27 @@ header.header--hidden {
   will-change: transform;
 }
 
+@media (max-width: 768px) {
+  /* All section videos on mobile: minimal margin so it fills the screen cleanly without cutting left/right */
+  .section video,
+  .section-video,
+  #section-0 video,
+  .section[data-section="intro"] video,
+  .section:first-child video {
+    position: absolute !important;
+    top: 50% !important;
+    left: 50% !important;
+    transform: translate(-50%, -50%) !important;
+    width: calc(100% - max(12px, calc(env(safe-area-inset-left, 6px) + env(safe-area-inset-right, 6px)))) !important;
+    height: calc(100% - max(24px, calc(env(safe-area-inset-top, 12px) + env(safe-area-inset-bottom, 12px)))) !important;
+    max-width: calc(100% - max(12px, calc(env(safe-area-inset-left, 6px) + env(safe-area-inset-right, 6px)))) !important;
+    max-height: calc(100% - max(24px, calc(env(safe-area-inset-top, 12px) + env(safe-area-inset-bottom, 12px)))) !important;
+    object-fit: contain !important;
+    object-position: center center !important;
+    background: transparent !important;
+  }
+}
+
 .video-status {
   position: absolute;
   top: 50%;
@@ -580,9 +601,11 @@ header.header--hidden {
   }
 
   .section-collection-banner {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
+    top: max(56px, env(safe-area-inset-top, 56px));
+    left: max(14px, env(safe-area-inset-left, 14px));
+    width: calc(100% - max(28px, calc(env(safe-area-inset-left, 14px) + env(safe-area-inset-right, 14px))));
+    height: calc(100% - max(90px, calc(env(safe-area-inset-top, 56px) + env(safe-area-inset-bottom, 34px))));
+    object-fit: contain;
     object-position: center center;
   }
 

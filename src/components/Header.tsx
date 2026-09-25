@@ -50,16 +50,7 @@ export default function Header({
         </div>
 
         {/* RIGHT: SOUND / ACTIONS (Maintains balance without displacing centered logo) */}
-        <div className="flex items-center justify-end gap-3 sm:gap-4 z-20 pr-6 sm:pr-12 md:pr-16">
-          <button
-            type="button"
-            onClick={onToggleMenu}
-            className="hidden md:inline-flex items-center justify-center h-[36px] px-4 rounded-[20px] border border-white/40 hover:border-white text-white/90 hover:text-white text-[10px] tracking-[1.5px] uppercase font-medium transition-all duration-300 backdrop-blur-[2px] hover:bg-white/5 cursor-pointer bg-transparent"
-            aria-label="Join The Circle"
-          >
-            JOIN THE CIRCLE
-          </button>
-
+        <div className="flex items-center justify-end z-20 pr-10 sm:pr-16">
           {onToggleSound ? (
             <button
               type="button"

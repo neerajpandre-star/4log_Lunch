@@ -94,12 +94,12 @@ const LoadingScreen = ({ onComplete }: LoadingScreenProps) => {
       aria-label="Loading 4LOG"
     >
       {/* Background Video: Original Section 1 Video Animation */}
-      <div className="absolute inset-0 overflow-hidden">
+      <div className="absolute inset-0 overflow-hidden flex items-center justify-center p-1.5 sm:p-0">
         <video
           ref={videoRef}
           key={activeVideoSrc}
           src={activeVideoSrc}
-          className="w-full h-full object-cover brightness-[1.08] contrast-[1.05]"
+          className="w-full h-full object-contain md:object-cover brightness-[1.08] contrast-[1.05]"
           autoPlay
           muted
           playsInline
