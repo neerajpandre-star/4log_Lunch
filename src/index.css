@@ -4650,7 +4650,7 @@ header.header--hidden {
 
 .social-popup__channels {
   display: grid;
-  grid-template-columns: repeat(5, 1fr);
+  grid-template-columns: repeat(4, 1fr);
   gap: 10px;
   margin-bottom: 16px;
 }

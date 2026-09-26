@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { FaFacebookF, FaInstagram, FaLinkedinIn, FaXTwitter, FaYoutube } from 'react-icons/fa6';
+import { FaFacebookF, FaInstagram, FaLinkedinIn, FaYoutube } from 'react-icons/fa6';
 
 type SocialPopupProps = {
   isVisible: boolean;
@@ -20,13 +20,6 @@ const socialChannels = [
     href: 'https://www.youtube.com/@4LOG.Studios',
     Icon: FaYoutube,
     color: '#FF0000',
-  },
-  {
-    name: 'X',
-    handle: '@4log',
-    href: 'https://x.com/4log',
-    Icon: FaXTwitter,
-    color: '#FFFFFF',
   },
   {
     name: 'Facebook',
