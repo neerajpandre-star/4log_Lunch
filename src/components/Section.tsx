@@ -103,6 +103,21 @@ const Section = ({
   const isFirstSection = index === 0;
   const isCircleSection = index === 1;
   const isFifthSection = index === 4;
+  const isWorldSection = index >= 1 && index <= 5;
+  const identityName = section.title || (isWorldSection ? identityNames[index - 1] : '');
+  const identitySlug = section.id;
+  const [showDiscovery, setShowDiscovery] = useState(false);
+
+  useEffect(() => {
+    if (isWorldSection && isActive) {
+      const timer = setTimeout(() => {
+        setShowDiscovery(true);
+      }, 700);
+      return () => clearTimeout(timer);
+    } else {
+      setShowDiscovery(false);
+    }
+  }, [isActive, isWorldSection]);
 
   const directionRef = useRef<1 | -1>(1);
   const lastDirectionRef = useRef<1 | -1>(1);
@@ -636,6 +651,22 @@ const Section = ({
           <source src={section.videoSrc} type="video/mp4" />
           Your browser does not support the video tag.
         </video>
+      )}
+
+      {isWorldSection && (
+        <div
+          className={`identity-popup ${showDiscovery && isActive ? 'is-visible' : 'is-exiting'}`}
+          aria-label={`Discover ${identityName}`}
+        >
+          <div className="identity-popup__title">{identityName}</div>
+          <a
+            href={`/collections/${identitySlug}`}
+            className="identity-popup__discover"
+            aria-label={`Discover ${identityName}`}
+          >
+            DISCOVER <span style={{ marginLeft: '6px' }}>→</span>
+          </a>
+        </div>
       )}
 
       {isFinalSection && (
