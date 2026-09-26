@@ -155,8 +155,8 @@ const Section = ({
         video.pause();
         return;
       }
-      video.muted = !soundEnabled;
-      video.volume = soundEnabled ? 1 : 0;
+      video.muted = true;
+      video.volume = 0;
       video.playbackRate = 1.0;
       const playPromise = video.play();
       if (playPromise !== undefined) {
@@ -197,8 +197,8 @@ const Section = ({
     targetTimeRef.current = video.currentTime;
     lastFrameTimeRef.current = performance.now();
 
-    video.muted = !soundEnabled;
-    video.volume = soundEnabled ? 1 : 0;
+    video.muted = true;
+    video.volume = 0;
     void video.play().catch(() => { });
 
     const handleComplete = (isDirectScroll = false) => {
@@ -506,8 +506,8 @@ const Section = ({
           }
 
           if (video.paused) {
-            video.muted = !soundEnabled;
-            video.volume = soundEnabled ? 1 : 0;
+            video.muted = true;
+            video.volume = 0;
             void video.play().catch(() => {});
           }
         }
@@ -594,7 +594,7 @@ const Section = ({
           data-section-index={index}
           className="section-video"
           autoPlay={!reducedMotion && isActive}
-          muted={!soundEnabled || !isActive}
+          muted={true}
           playsInline
           loop={!isFirstSection}
           onCanPlay={() => setVideoReady(true)}

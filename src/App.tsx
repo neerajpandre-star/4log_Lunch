@@ -82,20 +82,31 @@ function getCurrentPath() {
 type NavProps = {
   isMenuOpen: boolean;
   onToggleMenu: () => void;
+  soundEnabled?: boolean;
+  onToggleSound?: () => void;
 };
 
 type HomePageProps = {
   isMenuOpen: boolean;
   onToggleMenu: () => void;
   isLoaded: boolean;
+  soundEnabled: boolean;
+  onToggleSound: () => void;
+  onEnableSound?: () => void;
 };
 
-function HomePage({ isMenuOpen, onToggleMenu, isLoaded }: HomePageProps) {
+function HomePage({
+  isMenuOpen,
+  onToggleMenu,
+  isLoaded,
+  soundEnabled,
+  onToggleSound,
+  onEnableSound,
+}: HomePageProps) {
   const containerRef = useRef<HTMLDivElement | null>(null);
   const currentIndexRef = useRef(0);
   const sectionRefs = useMemo(() => sections.map(() => createRef<HTMLDivElement>()), []);
   const [currentIndex, setCurrentIndex] = useState(0);
-  const [soundEnabled, setSoundEnabled] = useState(false);
   const [reducedMotion, setReducedMotion] = useState(false);
   const [circleOpen, setCircleOpen] = useState(false);
   const [quizOpen, setQuizOpen] = useState(false);
@@ -112,6 +123,7 @@ function HomePage({ isMenuOpen, onToggleMenu, isLoaded }: HomePageProps) {
 
   const handleEnterJourney = (targetSection = 1) => {
     setIntroCompleted(true);
+    onEnableSound?.();
     scrollToSection(targetSection);
   };
 
@@ -162,7 +174,7 @@ function HomePage({ isMenuOpen, onToggleMenu, isLoaded }: HomePageProps) {
           isMenuOpen={isMenuOpen}
           onToggleMenu={onToggleMenu}
           soundEnabled={soundEnabled}
-          onToggleSound={() => setSoundEnabled((prev) => !prev)}
+          onToggleSound={onToggleSound}
         />
 
         <TimelineNav
@@ -215,12 +227,12 @@ function HomePage({ isMenuOpen, onToggleMenu, isLoaded }: HomePageProps) {
   );
 }
 
-function AboutPage({ isMenuOpen, onToggleMenu }: NavProps) {
+function AboutPage({ isMenuOpen, onToggleMenu, soundEnabled, onToggleSound }: NavProps) {
   return (
     <>
       <Seo page={aboutPageSeo} />
       <div className="page-shell page-shell--about">
-        <Header isMenuOpen={isMenuOpen} onToggleMenu={onToggleMenu} soundEnabled={false} onToggleSound={() => undefined} />
+        <Header isMenuOpen={isMenuOpen} onToggleMenu={onToggleMenu} soundEnabled={soundEnabled} onToggleSound={onToggleSound} />
         <main className="brand-page" aria-label="About 4LOG">
           <div className="brand-page__eyebrow">About 4LOG</div>
           <h1>What is 4LOG?</h1>
@@ -277,7 +289,7 @@ type CollectionPageProps = NavProps & {
   path: string;
 };
 
-function CollectionPage({ path, isMenuOpen, onToggleMenu }: CollectionPageProps) {
+function CollectionPage({ path, isMenuOpen, onToggleMenu, soundEnabled, onToggleSound }: CollectionPageProps) {
   const collection = collections.find((c) => c.href === path) || collections[0];
   const collectionSeo = {
     title: `${collection.name} | 4LOG Collections`,
@@ -292,7 +304,7 @@ function CollectionPage({ path, isMenuOpen, onToggleMenu }: CollectionPageProps)
     <>
       <Seo page={collectionSeo} />
       <div className="page-shell page-shell--collection">
-        <Header isMenuOpen={isMenuOpen} onToggleMenu={onToggleMenu} soundEnabled={false} onToggleSound={() => undefined} />
+        <Header isMenuOpen={isMenuOpen} onToggleMenu={onToggleMenu} soundEnabled={soundEnabled} onToggleSound={onToggleSound} />
         <main className="brand-page brand-page--collection" aria-label={`${collection.name} collection`}>
           <div className="brand-page__eyebrow">4LOG // COLLECTION</div>
           <h1>{collection.name}</h1>
@@ -342,6 +354,30 @@ function App() {
   const [currentPath, setCurrentPath] = useState(getCurrentPath);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
+  const [soundEnabled, setSoundEnabled] = useState(false);
+  const audioRef = useRef<HTMLAudioElement | null>(null);
+
+  useEffect(() => {
+    const audio = audioRef.current;
+    if (!audio) return;
+
+    if (soundEnabled) {
+      audio.volume = 0.75;
+      void audio.play().catch((err) => {
+        console.warn('Audio play prevented:', err);
+      });
+    } else {
+      audio.pause();
+    }
+  }, [soundEnabled]);
+
+  const handleToggleSound = () => {
+    setSoundEnabled((prev) => !prev);
+  };
+
+  const handleEnableSound = () => {
+    setSoundEnabled(true);
+  };
 
   const handleSelectCollection = (href: string) => {
     setIsMenuOpen(false);
@@ -385,7 +421,12 @@ function App() {
         onSelectCollection={handleSelectCollection}
       />
       {currentPath === '/about' && (
-        <AboutPage isMenuOpen={isMenuOpen} onToggleMenu={() => setIsMenuOpen((prev) => !prev)} />
+        <AboutPage
+          isMenuOpen={isMenuOpen}
+          onToggleMenu={() => setIsMenuOpen((prev) => !prev)}
+          soundEnabled={soundEnabled}
+          onToggleSound={handleToggleSound}
+        />
       )}
       {(currentPath === '/nivora' || currentPath === '/collections/nivora') && (
         <NivoraPage onToggleMenu={() => setIsMenuOpen((prev) => !prev)} />
@@ -395,6 +436,8 @@ function App() {
           path={currentPath}
           isMenuOpen={isMenuOpen}
           onToggleMenu={() => setIsMenuOpen((prev) => !prev)}
+          soundEnabled={soundEnabled}
+          onToggleSound={handleToggleSound}
         />
       )}
       {(currentPath === '/' || currentPath === '/timeline') && (
@@ -402,8 +445,22 @@ function App() {
           isMenuOpen={isMenuOpen}
           onToggleMenu={() => setIsMenuOpen((prev) => !prev)}
           isLoaded={!isLoading}
+          soundEnabled={soundEnabled}
+          onToggleSound={handleToggleSound}
+          onEnableSound={handleEnableSound}
         />
       )}
+
+      {/* Global soundtrack: Final audio */}
+      <audio
+        ref={audioRef}
+        src="/videos/Final audio.m4a"
+        loop
+        preload="auto"
+      >
+        <source src="/videos/Final audio.m4a" type="audio/mp4" />
+        <source src="/videos/final-audio.m4a" type="audio/mp4" />
+      </audio>
     </>
   );
 }
