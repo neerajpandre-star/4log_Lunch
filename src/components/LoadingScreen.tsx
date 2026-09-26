@@ -75,6 +75,11 @@ const LoadingScreen = ({ onComplete }: LoadingScreenProps) => {
     const video = videoRef.current;
     if (!video) return;
 
+    // Safety fallback: ensure screen never hangs indefinitely
+    const fallbackTimer = setTimeout(() => {
+      handleFinish();
+    }, 7000);
+
     const playPromise = video.play();
     if (playPromise !== undefined) {
       playPromise.catch((err) => {
@@ -82,6 +87,10 @@ const LoadingScreen = ({ onComplete }: LoadingScreenProps) => {
         handleFinish();
       });
     }
+
+    return () => {
+      clearTimeout(fallbackTimer);
+    };
   }, [activeVideoSrc]);
 
   if (isRemoved) return null;
@@ -106,6 +115,10 @@ const LoadingScreen = ({ onComplete }: LoadingScreenProps) => {
           preload="auto"
           onTimeUpdate={handleTimeUpdate}
           onEnded={handleEnded}
+          onError={() => {
+            console.warn('Loading video error');
+            handleFinish();
+          }}
         >
           Your browser does not support the video tag.
         </video>
