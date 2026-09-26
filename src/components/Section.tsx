@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from 'react';
 import { sections, type Section as SectionType } from '../data/sections';
 import { worldsData } from '../data/worlds';
+import SocialPopup from './SocialPopup';
 
 const identityNames = ['NIVORA', 'VAYREN', 'AURVIA', 'ASTERA', 'MANIFERA'];
 
@@ -635,6 +636,13 @@ const Section = ({
           <source src={section.videoSrc} type="video/mp4" />
           Your browser does not support the video tag.
         </video>
+      )}
+
+      {isFinalSection && (
+        <SocialPopup
+          isVisible={isActive}
+          onJoinCircle={onJoinCircle}
+        />
       )}
     </section>
   );

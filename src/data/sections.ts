@@ -71,4 +71,14 @@ export const sections: Section[] = [
     mobileVideoSrc: '/videos/manifera mob.mp4',
     label: 'MANIFERA',
   },
+  {
+    id: 'takeover',
+    sectionName: 'TALK TO TAKEOVER / 07',
+    title: 'TALK TO TAKEOVER',
+    subtitle: `For those who were told they couldn't.<br>For those who kept going anyway.`,
+    mood: 'Dominant · Unapologetic · Final',
+    imageSrc: '/Takeover.jpeg',
+    mobileImageSrc: '/Takeovermobile.png',
+    label: 'TALK TO TAKEOVER',
+  },
 ];
