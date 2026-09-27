@@ -3,11 +3,22 @@ import { Seo } from '../seo';
 
 type AsteraPageProps = {
   onToggleMenu?: () => void;
+  onBackToWorld?: () => void;
 };
 
-export default function AsteraPage({ onToggleMenu: _onToggleMenu }: AsteraPageProps) {
+export default function AsteraPage({ onToggleMenu, onBackToWorld }: AsteraPageProps) {
   const [email, setEmail] = useState('');
   const [isSubscribed, setIsSubscribed] = useState(false);
+
+  const handleBack = (e?: React.MouseEvent) => {
+    if (e) e.preventDefault();
+    if (onBackToWorld) {
+      onBackToWorld();
+    } else {
+      window.history.pushState({ world: 'astera' }, '', '/?world=astera');
+      window.dispatchEvent(new PopStateEvent('popstate'));
+    }
+  };
 
   const handleSubscribe = (e: FormEvent) => {
     e.preventDefault();
@@ -31,6 +42,52 @@ export default function AsteraPage({ onToggleMenu: _onToggleMenu }: AsteraPagePr
 
       {/* FULL WEB SCREEN EDGE-TO-EDGE CONTAINER */}
       <div className="w-full min-h-screen bg-[#040406] text-[#e0e4ec] font-['Inter',sans-serif] selection:bg-[#c0d4f8] selection:text-black overflow-x-hidden flex flex-col">
+
+        {/* ============================================================
+            CINEMATIC TOP NAVIGATION & WORLD BACK BUTTON
+            ============================================================ */}
+        <header className="fixed top-0 left-0 right-0 w-full z-[100] px-4 sm:px-8 lg:px-12 py-4 sm:py-6 flex items-center justify-between pointer-events-none transition-all duration-300">
+          
+          {/* ← BACK TO ASTERA */}
+          <div className="pointer-events-auto">
+            <button
+              type="button"
+              onClick={handleBack}
+              className="group inline-flex items-center gap-2 sm:gap-2.5 px-3.5 sm:px-5 py-2 sm:py-2.5 rounded-full border border-white/20 bg-[#060810]/75 hover:bg-[#0c1220] hover:border-[#a0e9ff]/70 text-white/90 hover:text-[#a0e9ff] backdrop-blur-md transition-all duration-300 shadow-[0_4px_20px_rgba(160,233,255,0.15)] cursor-pointer"
+              aria-label="Back to Astera section on 4LOG"
+            >
+              <span className="text-[#a0e9ff] group-hover:text-white transition-transform duration-300 group-hover:-translate-x-1 font-mono text-sm">←</span>
+              <span className="font-['Syncopate'] text-[9px] sm:text-[11px] font-semibold tracking-[0.25em] sm:tracking-[0.3em] uppercase">BACK TO ASTERA</span>
+            </button>
+          </div>
+
+          {/* RIGHT: MENU & 4LOG LOGO */}
+          <div className="flex items-center gap-3 sm:gap-4 pointer-events-auto">
+            {onToggleMenu && (
+              <button
+                type="button"
+                onClick={onToggleMenu}
+                className="w-9 h-9 sm:w-10 sm:h-10 flex items-center justify-center bg-black/60 hover:bg-black/90 backdrop-blur-md rounded-full border border-white/15 hover:border-white/40 text-white transition-all cursor-pointer"
+                aria-label="Toggle collections menu"
+              >
+                <div className="w-4 h-4 sm:w-5 sm:h-5 flex flex-col justify-center items-start gap-[3.5px] sm:gap-[4px]">
+                  <span className="w-4 sm:w-5 h-[1.5px] bg-white block" />
+                  <span className="w-3 sm:w-3.5 h-[1.5px] bg-white block" />
+                  <span className="w-4 sm:w-5 h-[1.5px] bg-white block" />
+                </div>
+              </button>
+            )}
+            <a
+              href="/?world=astera"
+              onClick={handleBack}
+              className="opacity-75 hover:opacity-100 transition-opacity flex items-center"
+              aria-label="4LOG Home"
+            >
+              <img src="/4log-logo.png" alt="4LOG" className="h-[20px] sm:h-[24px] w-auto object-contain" />
+            </a>
+          </div>
+
+        </header>
 
         {/* ============================================================
             01 — HERO (Epic Cinematic Celestial Landscape)

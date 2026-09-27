@@ -1,4 +1,4 @@
-import { createRef, useEffect, useMemo, useRef, useState } from 'react';
+import { createRef, useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react';
 import Header from './components/Header';
 import TimelineNav from './components/TimelineNav';
 import ScrollIndicator from './components/ScrollIndicator';
@@ -97,6 +97,16 @@ type HomePageProps = {
   soundEnabled: boolean;
   onToggleSound: () => void;
   onEnableSound?: () => void;
+  targetWorld?: string | null;
+  onTargetWorldHandled?: () => void;
+};
+
+const WORLD_SECTION_INDEX: Record<string, number> = {
+  nivora: 1,
+  vayren: 2,
+  aurvia: 3,
+  astera: 4,
+  manifera: 5,
 };
 
 function HomePage({
@@ -106,20 +116,38 @@ function HomePage({
   soundEnabled,
   onToggleSound,
   onEnableSound,
+  targetWorld,
+  onTargetWorldHandled,
 }: HomePageProps) {
   const containerRef = useRef<HTMLDivElement | null>(null);
-  const currentIndexRef = useRef(0);
   const sectionRefs = useMemo(() => sections.map(() => createRef<HTMLDivElement>()), []);
-  const [currentIndex, setCurrentIndex] = useState(0);
+
+  // Determine if a specific world was requested
+  const resolvedTargetIndex = useMemo(() => {
+    if (targetWorld && WORLD_SECTION_INDEX[targetWorld.toLowerCase()] !== undefined) {
+      return WORLD_SECTION_INDEX[targetWorld.toLowerCase()];
+    }
+    if (typeof window !== 'undefined') {
+      const params = new URLSearchParams(window.location.search);
+      const w = params.get('world');
+      if (w && WORLD_SECTION_INDEX[w.toLowerCase()] !== undefined) {
+        return WORLD_SECTION_INDEX[w.toLowerCase()];
+      }
+    }
+    return 0;
+  }, [targetWorld]);
+
+  const currentIndexRef = useRef(resolvedTargetIndex);
+  const [currentIndex, setCurrentIndex] = useState(resolvedTargetIndex);
   const [reducedMotion, setReducedMotion] = useState(false);
   const [circleOpen, setCircleOpen] = useState(false);
   const [quizOpen, setQuizOpen] = useState(false);
-  const [introCompleted, setIntroCompleted] = useState(false);
+  const [introCompleted, setIntroCompleted] = useState(resolvedTargetIndex > 0);
   const [, setIntroVideoEnded] = useState(false);
 
   const scrollToSection = (index: number) => {
     if (index >= 0 && index < sections.length) {
-      sectionRefs[index]?.current?.scrollIntoView({ behavior: 'smooth' });
+      sectionRefs[index]?.current?.scrollIntoView({ behavior: 'smooth', block: 'center' });
       setCurrentIndex(index);
       currentIndexRef.current = index;
     }
@@ -130,6 +158,31 @@ function HomePage({
     onEnableSound?.();
     scrollToSection(targetSection);
   };
+
+  // Immediate positioning before first paint to prevent flashing section 0 / intro video
+  useLayoutEffect(() => {
+    if (resolvedTargetIndex > 0 && containerRef.current) {
+      setIntroCompleted(true);
+      setCurrentIndex(resolvedTargetIndex);
+      currentIndexRef.current = resolvedTargetIndex;
+      const height = containerRef.current.clientHeight || window.innerHeight;
+      containerRef.current.scrollTop = resolvedTargetIndex * height;
+    }
+  }, [resolvedTargetIndex]);
+
+  // Smooth cinematic centering scroll on return
+  useEffect(() => {
+    if (resolvedTargetIndex > 0) {
+      const timer = setTimeout(() => {
+        const targetEl = sectionRefs[resolvedTargetIndex]?.current;
+        if (targetEl) {
+          targetEl.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }
+        onTargetWorldHandled?.();
+      }, 70);
+      return () => clearTimeout(timer);
+    }
+  }, [resolvedTargetIndex, sectionRefs, onTargetWorldHandled]);
 
   // Track active section on scroll
   useEffect(() => {
@@ -390,9 +443,35 @@ function App() {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
+  const [targetWorld, setTargetWorld] = useState<string | null>(() => {
+    if (typeof window === 'undefined') return null;
+    const params = new URLSearchParams(window.location.search);
+    return params.get('world') || null;
+  });
+
+  const handleBackToWorld = (worldId: string) => {
+    const normalized = worldId.toLowerCase();
+    setTargetWorld(normalized);
+    window.history.pushState({ world: normalized }, '', `/?world=${normalized}`);
+    setCurrentPath('/');
+    window.scrollTo({ top: 0, behavior: 'instant' });
+  };
+
   useEffect(() => {
     const handlePathChange = () => {
-      setCurrentPath(getCurrentPath());
+      const newPath = getCurrentPath();
+      const params = new URLSearchParams(window.location.search);
+      const worldParam = params.get('world');
+      if (worldParam) {
+        setTargetWorld(worldParam.toLowerCase());
+      } else if (newPath === '/' || newPath === '/timeline') {
+        const prev = window.location.pathname;
+        const match = prev.match(/\/(?:collections\/)?(nivora|vayren|aurvia|astera|manifera)/i);
+        if (match && match[1]) {
+          setTargetWorld(match[1].toLowerCase());
+        }
+      }
+      setCurrentPath(newPath);
       setIsMenuOpen(false);
     };
     const handleAnchorClick = (event: MouseEvent) => {
@@ -433,19 +512,34 @@ function App() {
         />
       )}
       {(currentPath === '/nivora' || currentPath === '/collections/nivora') && (
-        <NivoraPage onToggleMenu={() => setIsMenuOpen((prev) => !prev)} />
+        <NivoraPage
+          onToggleMenu={() => setIsMenuOpen((prev) => !prev)}
+          onBackToWorld={() => handleBackToWorld('nivora')}
+        />
       )}
       {(currentPath === '/vayren' || currentPath === '/collections/vayren') && (
-        <VayrenPage onToggleMenu={() => setIsMenuOpen((prev) => !prev)} />
+        <VayrenPage
+          onToggleMenu={() => setIsMenuOpen((prev) => !prev)}
+          onBackToWorld={() => handleBackToWorld('vayren')}
+        />
       )}
       {(currentPath === '/aurvia' || currentPath === '/collections/aurvia') && (
-        <AurviaPage onToggleMenu={() => setIsMenuOpen((prev) => !prev)} />
+        <AurviaPage
+          onToggleMenu={() => setIsMenuOpen((prev) => !prev)}
+          onBackToWorld={() => handleBackToWorld('aurvia')}
+        />
       )}
       {(currentPath === '/astera' || currentPath === '/collections/astera') && (
-        <AsteraPage onToggleMenu={() => setIsMenuOpen((prev) => !prev)} />
+        <AsteraPage
+          onToggleMenu={() => setIsMenuOpen((prev) => !prev)}
+          onBackToWorld={() => handleBackToWorld('astera')}
+        />
       )}
       {(currentPath === '/manifera' || currentPath === '/collections/manifera') && (
-        <ManiferaPage onToggleMenu={() => setIsMenuOpen((prev) => !prev)} />
+        <ManiferaPage
+          onToggleMenu={() => setIsMenuOpen((prev) => !prev)}
+          onBackToWorld={() => handleBackToWorld('manifera')}
+        />
       )}
       {currentPath.startsWith('/collections') && currentPath !== '/collections/nivora' && currentPath !== '/collections/vayren' && currentPath !== '/collections/aurvia' && currentPath !== '/collections/astera' && currentPath !== '/collections/manifera' && (
         <CollectionPage
@@ -464,6 +558,8 @@ function App() {
           soundEnabled={soundEnabled}
           onToggleSound={handleToggleSound}
           onEnableSound={handleEnableSound}
+          targetWorld={targetWorld}
+          onTargetWorldHandled={() => setTargetWorld(null)}
         />
       )}
 
