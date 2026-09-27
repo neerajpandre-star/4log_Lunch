@@ -19,6 +19,7 @@ export const sections: Section[] = [
     subtitle: '',
     mood: '',
     videoSrc: '/start.mp4',
+    mobileVideoSrc: '/start.mp4',
     label: 'ENTER THE JOURNEY',
   },
   {
