@@ -191,6 +191,7 @@ function HomePage({
 
     let frameId = 0;
     const handleScroll = () => {
+      onEnableSound?.();
       if (frameId) return;
 
       frameId = window.requestAnimationFrame(() => {
@@ -212,7 +213,7 @@ function HomePage({
       container.removeEventListener('scroll', handleScroll);
       if (frameId) window.cancelAnimationFrame(frameId);
     };
-  }, []);
+  }, [onEnableSound]);
 
   useEffect(() => {
     const query = window.matchMedia('(prefers-reduced-motion: reduce)');
@@ -413,6 +414,7 @@ function App() {
   const [isLoading, setIsLoading] = useState(true);
   // Audio defaults to UNMUTED (true) on every enter and every reload
   const [soundEnabled, setSoundEnabled] = useState(true);
+  const [isAudioPlaying, setIsAudioPlaying] = useState(false);
   const userMutedRef = useRef(false);
   const audioRef = useRef<HTMLAudioElement | null>(null);
 
@@ -422,19 +424,52 @@ function App() {
     const audio = audioRef.current;
     if (!audio) return;
 
+    try {
+      const AudioCtx = window.AudioContext || (window as unknown as { webkitAudioContext: typeof AudioContext }).webkitAudioContext;
+      if (AudioCtx) {
+        const ctx = new AudioCtx();
+        if (ctx.state === 'suspended') {
+          void ctx.resume();
+        }
+      }
+    } catch (_) {}
+
+    try {
+      audio.volume = 0.75;
+    } catch (_) {}
     audio.muted = false;
-    audio.volume = 0.75;
+
     const playPromise = audio.play();
     if (playPromise !== undefined) {
       playPromise
         .then(() => {
           setSoundEnabled(true);
+          setIsAudioPlaying(true);
         })
         .catch((err) => {
           console.log('Audio autoplay waiting for user interaction:', err);
         });
     }
   };
+
+  // Sync audio play/pause event state
+  useEffect(() => {
+    const audio = audioRef.current;
+    if (!audio) return;
+
+    const onPlay = () => setIsAudioPlaying(true);
+    const onPause = () => setIsAudioPlaying(false);
+
+    audio.addEventListener('play', onPlay);
+    audio.addEventListener('playing', onPlay);
+    audio.addEventListener('pause', onPause);
+
+    return () => {
+      audio.removeEventListener('play', onPlay);
+      audio.removeEventListener('playing', onPlay);
+      audio.removeEventListener('pause', onPause);
+    };
+  }, []);
 
   // Sync audio playback when soundEnabled changes
   useEffect(() => {
@@ -443,16 +478,21 @@ function App() {
 
     if (soundEnabled) {
       if (!userMutedRef.current) {
+        try {
+          audio.volume = 0.75;
+        } catch (_) {}
         audio.muted = false;
-        audio.volume = 0.75;
         const playPromise = audio.play();
         if (playPromise !== undefined) {
-          playPromise.catch(() => {});
+          playPromise
+            .then(() => setIsAudioPlaying(true))
+            .catch(() => {});
         }
       }
     } else {
       audio.muted = true;
       audio.pause();
+      setIsAudioPlaying(false);
     }
   }, [soundEnabled]);
 
@@ -466,18 +506,7 @@ function App() {
 
     const startAudioOnGesture = () => {
       if (userMutedRef.current) return;
-      if (audio) {
-        audio.muted = false;
-        audio.volume = 0.75;
-        const playPromise = audio.play();
-        if (playPromise !== undefined) {
-          playPromise
-            .then(() => {
-              setSoundEnabled(true);
-            })
-            .catch(() => {});
-        }
-      }
+      triggerPlayAudio();
     };
 
     const events = ['pointerdown', 'mousedown', 'touchstart', 'touchend', 'click', 'keydown', 'wheel', 'scroll'];
@@ -591,6 +620,7 @@ function App() {
             triggerPlayAudio();
           }}
           onUserInteract={triggerPlayAudio}
+          isAudioPlaying={isAudioPlaying}
         />
       )}
       <CollectionMenu
@@ -671,14 +701,14 @@ function App() {
       {/* Global soundtrack: Final audio */}
       <audio
         ref={audioRef}
-        src="/videos/Final audio.m4a"
+        src="/videos/final-audio.m4a"
         loop
         preload="auto"
         autoPlay
         playsInline
       >
-        <source src="/videos/Final audio.m4a" type="audio/mp4" />
         <source src="/videos/final-audio.m4a" type="audio/mp4" />
+        <source src="/videos/Final%20audio.m4a" type="audio/mp4" />
       </audio>
     </>
   );
