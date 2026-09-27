@@ -416,73 +416,110 @@ function App() {
   const userMutedRef = useRef(false);
   const audioRef = useRef<HTMLAudioElement | null>(null);
 
-  // Sync audio playback with soundEnabled state
+  // Trigger unmuted audio playback whenever allowed
+  const triggerPlayAudio = () => {
+    if (userMutedRef.current) return;
+    const audio = audioRef.current;
+    if (!audio) return;
+
+    audio.muted = false;
+    audio.volume = 0.75;
+    const playPromise = audio.play();
+    if (playPromise !== undefined) {
+      playPromise
+        .then(() => {
+          setSoundEnabled(true);
+        })
+        .catch((err) => {
+          console.log('Audio autoplay waiting for user interaction:', err);
+        });
+    }
+  };
+
+  // Sync audio playback when soundEnabled changes
   useEffect(() => {
     const audio = audioRef.current;
     if (!audio) return;
 
     if (soundEnabled) {
-      audio.volume = 0.75;
-      const playPromise = audio.play();
-      if (playPromise !== undefined) {
-        playPromise.catch((err) => {
-          // Browser autoplay policy might block unmuted audio until user interaction
-          console.log('Audio autoplay waiting for user interaction:', err);
-        });
+      if (!userMutedRef.current) {
+        audio.muted = false;
+        audio.volume = 0.75;
+        const playPromise = audio.play();
+        if (playPromise !== undefined) {
+          playPromise.catch(() => {});
+        }
       }
     } else {
+      audio.muted = true;
       audio.pause();
     }
   }, [soundEnabled]);
 
-  // One-time interaction listener to immediately start music if browser blocked cold autoplay
+  // Immediately attempt playback on enter, plus capture listeners for early unlock
   useEffect(() => {
     const audio = audioRef.current;
     if (!audio) return;
 
+    // First attempt immediately on mount/enter
+    triggerPlayAudio();
+
     const startAudioOnGesture = () => {
-      // If user hasn't explicitly clicked mute, start playing
-      if (!userMutedRef.current) {
-        setSoundEnabled(true);
-        if (audio.paused) {
-          audio.volume = 0.75;
-          void audio.play().then(() => {
-            cleanup();
-          }).catch(() => {});
+      if (userMutedRef.current) return;
+      if (audio) {
+        audio.muted = false;
+        audio.volume = 0.75;
+        const playPromise = audio.play();
+        if (playPromise !== undefined) {
+          playPromise
+            .then(() => {
+              setSoundEnabled(true);
+            })
+            .catch(() => {});
         }
       }
     };
 
-    const cleanup = () => {
-      window.removeEventListener('pointerdown', startAudioOnGesture);
-      window.removeEventListener('touchstart', startAudioOnGesture);
-      window.removeEventListener('click', startAudioOnGesture);
-      window.removeEventListener('keydown', startAudioOnGesture);
-      window.removeEventListener('wheel', startAudioOnGesture);
-      window.removeEventListener('scroll', startAudioOnGesture);
+    const events = ['pointerdown', 'mousedown', 'touchstart', 'touchend', 'click', 'keydown', 'wheel', 'scroll'];
+    events.forEach((evt) => {
+      window.addEventListener(evt, startAudioOnGesture, { capture: true, passive: true });
+      document.addEventListener(evt, startAudioOnGesture, { capture: true, passive: true });
+    });
+
+    return () => {
+      events.forEach((evt) => {
+        window.removeEventListener(evt, startAudioOnGesture, { capture: true });
+        document.removeEventListener(evt, startAudioOnGesture, { capture: true });
+      });
     };
-
-    window.addEventListener('pointerdown', startAudioOnGesture, { passive: true });
-    window.addEventListener('touchstart', startAudioOnGesture, { passive: true });
-    window.addEventListener('click', startAudioOnGesture, { passive: true });
-    window.addEventListener('keydown', startAudioOnGesture, { passive: true });
-    window.addEventListener('wheel', startAudioOnGesture, { passive: true });
-    window.addEventListener('scroll', startAudioOnGesture, { passive: true });
-
-    return cleanup;
   }, []);
 
   const handleToggleSound = () => {
-    setSoundEnabled((prev) => {
-      const next = !prev;
-      userMutedRef.current = !next; // If toggled to muted, mark explicit mute
-      return next;
-    });
+    const audio = audioRef.current;
+    if (soundEnabled) {
+      // User explicitly clicked mute: mute audio and pause
+      userMutedRef.current = true;
+      setSoundEnabled(false);
+      if (audio) {
+        audio.muted = true;
+        audio.pause();
+      }
+    } else {
+      // User explicitly unmuted: unmute and play
+      userMutedRef.current = false;
+      setSoundEnabled(true);
+      if (audio) {
+        audio.muted = false;
+        audio.volume = 0.75;
+        void audio.play().catch(() => {});
+      }
+    }
   };
 
   const handleEnableSound = () => {
     if (!userMutedRef.current) {
       setSoundEnabled(true);
+      triggerPlayAudio();
     }
   };
 
@@ -547,7 +584,15 @@ function App() {
 
   return (
     <>
-      {isLoading && <LoadingScreen onComplete={() => setIsLoading(false)} />}
+      {isLoading && (
+        <LoadingScreen
+          onComplete={() => {
+            setIsLoading(false);
+            triggerPlayAudio();
+          }}
+          onUserInteract={triggerPlayAudio}
+        />
+      )}
       <CollectionMenu
         isOpen={isMenuOpen}
         onClose={() => setIsMenuOpen(false)}
@@ -630,6 +675,7 @@ function App() {
         loop
         preload="auto"
         autoPlay
+        playsInline
       >
         <source src="/videos/Final audio.m4a" type="audio/mp4" />
         <source src="/videos/final-audio.m4a" type="audio/mp4" />

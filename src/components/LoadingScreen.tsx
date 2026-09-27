@@ -2,9 +2,10 @@ import { type SyntheticEvent, useEffect, useRef, useState } from 'react';
 
 type LoadingScreenProps = {
   onComplete?: () => void;
+  onUserInteract?: () => void;
 };
 
-const LoadingScreen = ({ onComplete }: LoadingScreenProps) => {
+const LoadingScreen = ({ onComplete, onUserInteract }: LoadingScreenProps) => {
   const [progress, setProgress] = useState(0);
   const [isExiting, setIsExiting] = useState(false);
   const [isRemoved, setIsRemoved] = useState(false);
@@ -97,6 +98,8 @@ const LoadingScreen = ({ onComplete }: LoadingScreenProps) => {
 
   return (
     <div
+      onClick={onUserInteract}
+      onPointerDown={onUserInteract}
       className={`fixed inset-0 z-[9999] bg-black text-white transition-all duration-700 ease-out select-none ${
         isExiting ? 'opacity-0 scale-[1.02] pointer-events-none' : 'opacity-100 scale-100'
       }`}

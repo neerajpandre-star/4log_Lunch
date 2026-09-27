@@ -9,7 +9,7 @@ type HeaderProps = {
 export default function Header({
   isMenuOpen = false,
   onToggleMenu,
-  soundEnabled = false,
+  soundEnabled = true,
   onToggleSound,
 }: HeaderProps) {
   return (
