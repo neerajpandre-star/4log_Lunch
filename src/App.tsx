@@ -8,6 +8,7 @@ import CharacterQuiz from './components/CharacterQuiz';
 import CollectionMenu from './components/CollectionMenu';
 import LoadingScreen from './components/LoadingScreen';
 import NivoraPage from './pages/NivoraPage';
+import VayrenPage from './pages/VayrenPage';
 import { sections } from './data/sections';
 import { collections } from './data/collections';
 import { Seo } from './seo';
@@ -431,7 +432,10 @@ function App() {
       {(currentPath === '/nivora' || currentPath === '/collections/nivora') && (
         <NivoraPage onToggleMenu={() => setIsMenuOpen((prev) => !prev)} />
       )}
-      {currentPath.startsWith('/collections') && currentPath !== '/collections/nivora' && (
+      {(currentPath === '/vayren' || currentPath === '/collections/vayren') && (
+        <VayrenPage onToggleMenu={() => setIsMenuOpen((prev) => !prev)} />
+      )}
+      {currentPath.startsWith('/collections') && currentPath !== '/collections/nivora' && currentPath !== '/collections/vayren' && (
         <CollectionPage
           path={currentPath}
           isMenuOpen={isMenuOpen}
