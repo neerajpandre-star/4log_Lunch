@@ -9,6 +9,7 @@ import CollectionMenu from './components/CollectionMenu';
 import LoadingScreen from './components/LoadingScreen';
 import NivoraPage from './pages/NivoraPage';
 import VayrenPage from './pages/VayrenPage';
+import AurviaPage from './pages/AurviaPage';
 import { sections } from './data/sections';
 import { collections } from './data/collections';
 import { Seo } from './seo';
@@ -435,7 +436,10 @@ function App() {
       {(currentPath === '/vayren' || currentPath === '/collections/vayren') && (
         <VayrenPage onToggleMenu={() => setIsMenuOpen((prev) => !prev)} />
       )}
-      {currentPath.startsWith('/collections') && currentPath !== '/collections/nivora' && currentPath !== '/collections/vayren' && (
+      {(currentPath === '/aurvia' || currentPath === '/collections/aurvia') && (
+        <AurviaPage onToggleMenu={() => setIsMenuOpen((prev) => !prev)} />
+      )}
+      {currentPath.startsWith('/collections') && currentPath !== '/collections/nivora' && currentPath !== '/collections/vayren' && currentPath !== '/collections/aurvia' && (
         <CollectionPage
           path={currentPath}
           isMenuOpen={isMenuOpen}
