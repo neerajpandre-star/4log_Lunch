@@ -509,7 +509,7 @@ function App() {
       triggerPlayAudio();
     };
 
-    const events = ['pointerdown', 'mousedown', 'touchstart', 'touchend', 'click', 'keydown', 'wheel', 'scroll'];
+    const events = ['pointerdown', 'mousedown', 'touchstart', 'touchend', 'click', 'keydown', 'wheel', 'scroll', 'pointermove', 'mousemove'];
     events.forEach((evt) => {
       window.addEventListener(evt, startAudioOnGesture, { capture: true, passive: true });
       document.addEventListener(evt, startAudioOnGesture, { capture: true, passive: true });
@@ -620,7 +620,6 @@ function App() {
             triggerPlayAudio();
           }}
           onUserInteract={triggerPlayAudio}
-          isAudioPlaying={isAudioPlaying}
         />
       )}
       <CollectionMenu
