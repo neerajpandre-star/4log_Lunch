@@ -48,16 +48,19 @@ export default function AsteraPage({ onToggleMenu, onBackToWorld }: AsteraPagePr
             ============================================================ */}
         <header className="fixed top-0 left-0 right-0 w-full z-[100] px-4 sm:px-8 lg:px-12 py-4 sm:py-6 flex items-center justify-between pointer-events-none transition-all duration-300">
           
-          {/* ← BACK TO ASTERA */}
+          {/* ← BACK TO ASTERA (ARROW ONLY) */}
           <div className="pointer-events-auto">
             <button
               type="button"
               onClick={handleBack}
-              className="group inline-flex items-center gap-2 sm:gap-2.5 px-3.5 sm:px-5 py-2 sm:py-2.5 rounded-full border border-white/20 bg-[#060810]/75 hover:bg-[#0c1220] hover:border-[#a0e9ff]/70 text-white/90 hover:text-[#a0e9ff] backdrop-blur-md transition-all duration-300 shadow-[0_4px_20px_rgba(160,233,255,0.15)] cursor-pointer"
+              className="group w-9 h-9 sm:w-10 sm:h-10 flex items-center justify-center rounded-full border border-white/20 bg-[#060810]/75 hover:bg-[#0c1220] hover:border-[#a0e9ff]/80 text-white/90 hover:text-[#a0e9ff] backdrop-blur-md transition-all duration-300 shadow-[0_4px_20px_rgba(160,233,255,0.2)] cursor-pointer"
               aria-label="Back to Astera section on 4LOG"
+              title="Back to Astera"
             >
-              <span className="text-[#a0e9ff] group-hover:text-white transition-transform duration-300 group-hover:-translate-x-1 font-mono text-sm">←</span>
-              <span className="font-['Syncopate'] text-[9px] sm:text-[11px] font-semibold tracking-[0.25em] sm:tracking-[0.3em] uppercase">BACK TO ASTERA</span>
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round" className="transition-transform duration-300 group-hover:-translate-x-0.5">
+                <path d="M19 12H5" />
+                <path d="M12 19l-7-7 7-7" />
+              </svg>
             </button>
           </div>
 

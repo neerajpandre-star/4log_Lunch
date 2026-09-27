@@ -48,16 +48,19 @@ export default function VayrenPage({ onToggleMenu, onBackToWorld }: VayrenPagePr
             ============================================================ */}
         <header className="fixed top-0 left-0 right-0 w-full z-[100] px-4 sm:px-8 lg:px-12 py-4 sm:py-6 flex items-center justify-between pointer-events-none transition-all duration-300">
           
-          {/* ← BACK TO VAYREN */}
+          {/* ← BACK TO VAYREN (ARROW ONLY) */}
           <div className="pointer-events-auto">
             <button
               type="button"
               onClick={handleBack}
-              className="group inline-flex items-center gap-2 sm:gap-2.5 px-3.5 sm:px-5 py-2 sm:py-2.5 rounded-full border border-white/15 bg-[#0a0a0a]/75 hover:bg-[#121212] hover:border-[#e60019]/70 text-[#dcdcdc] hover:text-white backdrop-blur-md transition-all duration-300 shadow-[0_4px_20px_rgba(0,0,0,0.6)] cursor-pointer"
+              className="group w-9 h-9 sm:w-10 sm:h-10 flex items-center justify-center rounded-full border border-white/15 bg-[#0a0a0a]/75 hover:bg-[#141414] hover:border-[#e60019]/80 text-[#dcdcdc] hover:text-[#e60019] backdrop-blur-md transition-all duration-300 shadow-[0_4px_20px_rgba(0,0,0,0.6)] cursor-pointer"
               aria-label="Back to Vayren section on 4LOG"
+              title="Back to Vayren"
             >
-              <span className="text-[#e60019] group-hover:text-white transition-transform duration-300 group-hover:-translate-x-1 font-mono text-sm">←</span>
-              <span className="font-['Syncopate'] text-[9px] sm:text-[11px] font-semibold tracking-[0.25em] sm:tracking-[0.3em] uppercase">BACK TO VAYREN</span>
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round" className="transition-transform duration-300 group-hover:-translate-x-0.5">
+                <path d="M19 12H5" />
+                <path d="M12 19l-7-7 7-7" />
+              </svg>
             </button>
           </div>
 

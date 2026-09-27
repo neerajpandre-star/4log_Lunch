@@ -48,16 +48,19 @@ export default function AurviaPage({ onToggleMenu, onBackToWorld }: AurviaPagePr
             ============================================================ */}
         <header className="fixed top-0 left-0 right-0 w-full z-[100] px-4 sm:px-8 lg:px-12 py-4 sm:py-6 flex items-center justify-between pointer-events-none transition-all duration-300">
           
-          {/* ← BACK TO AURVIA */}
+          {/* ← BACK TO AURVIA (ARROW ONLY) */}
           <div className="pointer-events-auto">
             <button
               type="button"
               onClick={handleBack}
-              className="group inline-flex items-center gap-2 sm:gap-2.5 px-3.5 sm:px-5 py-2 sm:py-2.5 rounded-full border border-[#d4af37]/30 bg-[#0a0805]/75 hover:bg-[#141008] hover:border-[#d4af37] text-[#e8dfc8] hover:text-white backdrop-blur-md transition-all duration-300 shadow-[0_4px_20px_rgba(212,175,55,0.15)] cursor-pointer"
+              className="group w-9 h-9 sm:w-10 sm:h-10 flex items-center justify-center rounded-full border border-[#d4af37]/35 bg-[#0a0805]/75 hover:bg-[#141008] hover:border-[#d4af37] text-[#d4af37] hover:text-[#f3e5ab] backdrop-blur-md transition-all duration-300 shadow-[0_4px_20px_rgba(212,175,55,0.2)] cursor-pointer"
               aria-label="Back to Aurvia section on 4LOG"
+              title="Back to Aurvia"
             >
-              <span className="text-[#d4af37] group-hover:text-white transition-transform duration-300 group-hover:-translate-x-1 font-serif text-sm">←</span>
-              <span className="font-['Syncopate'] text-[9px] sm:text-[11px] font-semibold tracking-[0.25em] sm:tracking-[0.3em] uppercase">BACK TO AURVIA</span>
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round" className="transition-transform duration-300 group-hover:-translate-x-0.5">
+                <path d="M19 12H5" />
+                <path d="M12 19l-7-7 7-7" />
+              </svg>
             </button>
           </div>
 
