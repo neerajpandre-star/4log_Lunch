@@ -10,6 +10,7 @@ import LoadingScreen from './components/LoadingScreen';
 import NivoraPage from './pages/NivoraPage';
 import VayrenPage from './pages/VayrenPage';
 import AurviaPage from './pages/AurviaPage';
+import AsteraPage from './pages/AsteraPage';
 import { sections } from './data/sections';
 import { collections } from './data/collections';
 import { Seo } from './seo';
@@ -439,7 +440,10 @@ function App() {
       {(currentPath === '/aurvia' || currentPath === '/collections/aurvia') && (
         <AurviaPage onToggleMenu={() => setIsMenuOpen((prev) => !prev)} />
       )}
-      {currentPath.startsWith('/collections') && currentPath !== '/collections/nivora' && currentPath !== '/collections/vayren' && currentPath !== '/collections/aurvia' && (
+      {(currentPath === '/astera' || currentPath === '/collections/astera') && (
+        <AsteraPage onToggleMenu={() => setIsMenuOpen((prev) => !prev)} />
+      )}
+      {currentPath.startsWith('/collections') && currentPath !== '/collections/nivora' && currentPath !== '/collections/vayren' && currentPath !== '/collections/aurvia' && currentPath !== '/collections/astera' && (
         <CollectionPage
           path={currentPath}
           isMenuOpen={isMenuOpen}
