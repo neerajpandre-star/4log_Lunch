@@ -4,9 +4,11 @@ import { Seo } from '../seo';
 type NivoraPageProps = {
   onToggleMenu?: () => void;
   onBackToWorld?: () => void;
+  soundEnabled?: boolean;
+  onToggleSound?: () => void;
 };
 
-export default function NivoraPage({ onToggleMenu, onBackToWorld }: NivoraPageProps) {
+export default function NivoraPage({ onToggleMenu, onBackToWorld, soundEnabled = true, onToggleSound }: NivoraPageProps) {
   const [email, setEmail] = useState('');
   const [isSubscribed, setIsSubscribed] = useState(false);
 
@@ -64,8 +66,33 @@ export default function NivoraPage({ onToggleMenu, onBackToWorld }: NivoraPagePr
             </button>
           </div>
 
-          {/* RIGHT: MENU & 4LOG LOGO */}
-          <div className="flex items-center gap-3 sm:gap-4 pointer-events-auto">
+          {/* RIGHT: SOUND, MENU & 4LOG LOGO */}
+          <div className="flex items-center gap-2.5 sm:gap-4 pointer-events-auto">
+            {onToggleSound && (
+              <button
+                type="button"
+                onClick={onToggleSound}
+                className="w-9 h-9 sm:w-10 sm:h-10 flex items-center justify-center bg-black/60 hover:bg-black/90 backdrop-blur-md rounded-full border border-white/15 hover:border-white/40 text-white transition-all cursor-pointer"
+                aria-label={soundEnabled ? 'Disable audio' : 'Enable audio'}
+                title={soundEnabled ? 'Mute audio' : 'Unmute audio'}
+              >
+                <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round">
+                  {soundEnabled ? (
+                    <>
+                      <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5" />
+                      <path d="M15.54 8.46a5 5 0 0 1 0 7.07" />
+                      <path d="M19.07 4.93a10 10 0 0 1 0 14.14" />
+                    </>
+                  ) : (
+                    <>
+                      <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5" />
+                      <line x1="23" y1="9" x2="17" y2="15" />
+                      <line x1="17" y1="9" x2="23" y2="15" />
+                    </>
+                  )}
+                </svg>
+              </button>
+            )}
             {onToggleMenu && (
               <button
                 type="button"

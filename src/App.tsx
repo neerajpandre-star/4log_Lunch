@@ -411,29 +411,79 @@ function App() {
   const [currentPath, setCurrentPath] = useState(getCurrentPath);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
-  const [soundEnabled, setSoundEnabled] = useState(false);
+  // Audio defaults to UNMUTED (true) on every enter and every reload
+  const [soundEnabled, setSoundEnabled] = useState(true);
+  const userMutedRef = useRef(false);
   const audioRef = useRef<HTMLAudioElement | null>(null);
 
+  // Sync audio playback with soundEnabled state
   useEffect(() => {
     const audio = audioRef.current;
     if (!audio) return;
 
     if (soundEnabled) {
       audio.volume = 0.75;
-      void audio.play().catch((err) => {
-        console.warn('Audio play prevented:', err);
-      });
+      const playPromise = audio.play();
+      if (playPromise !== undefined) {
+        playPromise.catch((err) => {
+          // Browser autoplay policy might block unmuted audio until user interaction
+          console.log('Audio autoplay waiting for user interaction:', err);
+        });
+      }
     } else {
       audio.pause();
     }
   }, [soundEnabled]);
 
+  // One-time interaction listener to immediately start music if browser blocked cold autoplay
+  useEffect(() => {
+    const audio = audioRef.current;
+    if (!audio) return;
+
+    const startAudioOnGesture = () => {
+      // If user hasn't explicitly clicked mute, start playing
+      if (!userMutedRef.current) {
+        setSoundEnabled(true);
+        if (audio.paused) {
+          audio.volume = 0.75;
+          void audio.play().then(() => {
+            cleanup();
+          }).catch(() => {});
+        }
+      }
+    };
+
+    const cleanup = () => {
+      window.removeEventListener('pointerdown', startAudioOnGesture);
+      window.removeEventListener('touchstart', startAudioOnGesture);
+      window.removeEventListener('click', startAudioOnGesture);
+      window.removeEventListener('keydown', startAudioOnGesture);
+      window.removeEventListener('wheel', startAudioOnGesture);
+      window.removeEventListener('scroll', startAudioOnGesture);
+    };
+
+    window.addEventListener('pointerdown', startAudioOnGesture, { passive: true });
+    window.addEventListener('touchstart', startAudioOnGesture, { passive: true });
+    window.addEventListener('click', startAudioOnGesture, { passive: true });
+    window.addEventListener('keydown', startAudioOnGesture, { passive: true });
+    window.addEventListener('wheel', startAudioOnGesture, { passive: true });
+    window.addEventListener('scroll', startAudioOnGesture, { passive: true });
+
+    return cleanup;
+  }, []);
+
   const handleToggleSound = () => {
-    setSoundEnabled((prev) => !prev);
+    setSoundEnabled((prev) => {
+      const next = !prev;
+      userMutedRef.current = !next; // If toggled to muted, mark explicit mute
+      return next;
+    });
   };
 
   const handleEnableSound = () => {
-    setSoundEnabled(true);
+    if (!userMutedRef.current) {
+      setSoundEnabled(true);
+    }
   };
 
   const handleSelectCollection = (href: string) => {
@@ -515,30 +565,40 @@ function App() {
         <NivoraPage
           onToggleMenu={() => setIsMenuOpen((prev) => !prev)}
           onBackToWorld={() => handleBackToWorld('nivora')}
+          soundEnabled={soundEnabled}
+          onToggleSound={handleToggleSound}
         />
       )}
       {(currentPath === '/vayren' || currentPath === '/collections/vayren') && (
         <VayrenPage
           onToggleMenu={() => setIsMenuOpen((prev) => !prev)}
           onBackToWorld={() => handleBackToWorld('vayren')}
+          soundEnabled={soundEnabled}
+          onToggleSound={handleToggleSound}
         />
       )}
       {(currentPath === '/aurvia' || currentPath === '/collections/aurvia') && (
         <AurviaPage
           onToggleMenu={() => setIsMenuOpen((prev) => !prev)}
           onBackToWorld={() => handleBackToWorld('aurvia')}
+          soundEnabled={soundEnabled}
+          onToggleSound={handleToggleSound}
         />
       )}
       {(currentPath === '/astera' || currentPath === '/collections/astera') && (
         <AsteraPage
           onToggleMenu={() => setIsMenuOpen((prev) => !prev)}
           onBackToWorld={() => handleBackToWorld('astera')}
+          soundEnabled={soundEnabled}
+          onToggleSound={handleToggleSound}
         />
       )}
       {(currentPath === '/manifera' || currentPath === '/collections/manifera') && (
         <ManiferaPage
           onToggleMenu={() => setIsMenuOpen((prev) => !prev)}
           onBackToWorld={() => handleBackToWorld('manifera')}
+          soundEnabled={soundEnabled}
+          onToggleSound={handleToggleSound}
         />
       )}
       {currentPath.startsWith('/collections') && currentPath !== '/collections/nivora' && currentPath !== '/collections/vayren' && currentPath !== '/collections/aurvia' && currentPath !== '/collections/astera' && currentPath !== '/collections/manifera' && (
@@ -569,6 +629,7 @@ function App() {
         src="/videos/Final audio.m4a"
         loop
         preload="auto"
+        autoPlay
       >
         <source src="/videos/Final audio.m4a" type="audio/mp4" />
         <source src="/videos/final-audio.m4a" type="audio/mp4" />
