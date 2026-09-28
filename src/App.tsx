@@ -18,49 +18,28 @@ import { Seo } from './seo';
 import './index.css';
 
 const homePageSeo = {
-  title: '4LOG. Do It Anyway. From Talk to Takeover.',
-  description: '4LOG. Do It Anyway. From Talk to Takeover. Built for people who stop listening to the noise, take action, and create their own path.',
+  title: '4LOG — Do It Anyway. From Talk to Takeover.',
+  description: '4LOG is a trending fashion brand creating bold T-shirts and apparel for people who do it anyway. Discover original designs made to stand out.',
   canonical: 'https://4log.in/',
-  ogTitle: '4LOG. Do It Anyway. From Talk to Takeover.',
-  ogDescription: 'From Talk to Takeover. Do It Anyway.',
+  ogTitle: '4LOG — Do It Anyway. From Talk to Takeover.',
+  ogDescription: '4LOG is a trending fashion brand creating bold T-shirts and apparel for people who do it anyway. Discover original designs made to stand out.',
   ogImage: 'https://4log.in/og-4log.svg',
   structuredData: [
     {
       '@context': 'https://schema.org',
-      '@type': 'Brand',
-      name: '4LOG',
-      description: '4LOG. Do It Anyway. From Talk to Takeover. Built for people who stop listening to the noise, take action, and create their own path.',
-      url: 'https://4log.in/',
-      logo: 'https://4log.in/4log-white.png',
-    },
-    {
-      '@context': 'https://schema.org',
-      '@type': 'WebSite',
-      name: '4LOG',
-      alternateName: '4LOG Clothing',
-      url: 'https://4log.in/',
-      description: '4LOG. Do It Anyway. From Talk to Takeover. Built for people who stop listening to the noise, take action, and create their own path.',
-      publisher: {
-        '@type': 'Organization',
-        name: '4LOG',
-        url: 'https://4log.in/',
-        logo: 'https://4log.in/4log-white.png',
-      },
-    },
-    {
-      '@context': 'https://schema.org',
       '@type': 'Organization',
+      '@id': 'https://4log.in/#organization',
       name: '4LOG',
-      description: '4LOG. Do It Anyway. From Talk to Takeover. Built for people who stop listening to the noise, take action, and create their own path.',
       url: 'https://4log.in/',
-      logo: 'https://4log.in/4log-white.png',
-      sameAs: [
-        'https://www.instagram.com/4log.india',
-        'https://www.youtube.com/@4LOG.Studios',
-        'https://x.com/4log',
-        'https://www.facebook.com/4log',
-        'https://www.linkedin.com/company/4log-india/about/',
-      ],
+      logo: {
+        '@type': 'ImageObject',
+        url: 'https://4log.in/og-4log.svg',
+      },
+      description: '4LOG is a trending fashion brand creating bold T-shirts and apparel for people who do it anyway. Discover original designs made to stand out.',
+      brand: {
+        '@type': 'Brand',
+        name: '4LOG',
+      },
     },
   ],
 };
@@ -432,11 +411,11 @@ function App() {
           void ctx.resume();
         }
       }
-    } catch (_) {}
+    } catch (_) { }
 
     try {
       audio.volume = 0.75;
-    } catch (_) {}
+    } catch (_) { }
     audio.muted = false;
 
     const playPromise = audio.play();
@@ -480,13 +459,13 @@ function App() {
       if (!userMutedRef.current) {
         try {
           audio.volume = 0.75;
-        } catch (_) {}
+        } catch (_) { }
         audio.muted = false;
         const playPromise = audio.play();
         if (playPromise !== undefined) {
           playPromise
             .then(() => setIsAudioPlaying(true))
-            .catch(() => {});
+            .catch(() => { });
         }
       }
     } else {
@@ -540,7 +519,7 @@ function App() {
       if (audio) {
         audio.muted = false;
         audio.volume = 0.75;
-        void audio.play().catch(() => {});
+        void audio.play().catch(() => { });
       }
     }
   };
