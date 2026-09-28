@@ -6,6 +6,7 @@ type ScrollIndicatorProps = {
 const ScrollIndicator = ({ hidden, onClick }: ScrollIndicatorProps) => (
   <button
     type="button"
+    aria-label="Scroll to next section"
     className={`scroll-indicator ${hidden ? 'hidden' : ''}`}
     aria-hidden={hidden}
     onClick={onClick}

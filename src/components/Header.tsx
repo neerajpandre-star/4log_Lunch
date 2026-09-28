@@ -41,6 +41,10 @@ export default function Header({
             <img
               src="/4log-logo.png"
               alt="4LOG"
+              width="100"
+              height="30"
+              fetchPriority="high"
+              decoding="async"
               className="h-[22px] sm:h-[26px] md:h-[30px] w-auto object-contain block"
             />
           </a>

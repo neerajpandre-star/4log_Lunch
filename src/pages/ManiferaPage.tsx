@@ -113,7 +113,7 @@ export default function ManiferaPage({ onToggleMenu, onBackToWorld, soundEnabled
               className="opacity-75 hover:opacity-100 transition-opacity flex items-center"
               aria-label="4LOG Home"
             >
-              <img src="/4log-logo.png" alt="4LOG" className="h-[20px] sm:h-[24px] w-auto object-contain" />
+              <img src="/4log-logo.png" alt="4LOG" width="80" height="24" decoding="async" className="h-[20px] sm:h-[24px] w-auto object-contain" />
             </a>
           </div>
 
