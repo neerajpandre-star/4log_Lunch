@@ -19,29 +19,18 @@ import './index.css';
 
 const homePageSeo = {
   title: '4LOG — Do It Anyway. From Talk to Takeover.',
-  description: '4LOG is a trending fashion brand creating bold T-shirts and apparel for people who do it anyway. Discover original designs made to stand out.',
+  description: '4LOG is a community built for people who choose action over opinions. Do it anyway. From talk to takeover.',
   canonical: 'https://4log.in/',
   ogTitle: '4LOG — Do It Anyway. From Talk to Takeover.',
-  ogDescription: '4LOG is a trending fashion brand creating bold T-shirts and apparel for people who do it anyway. Discover original designs made to stand out.',
+  ogDescription: '4LOG is a community built for people who choose action over opinions. Do it anyway. From talk to takeover.',
   ogImage: 'https://4log.in/og-4log.svg',
-  structuredData: [
-    {
-      '@context': 'https://schema.org',
-      '@type': 'Organization',
-      '@id': 'https://4log.in/#organization',
-      name: '4LOG',
-      url: 'https://4log.in/',
-      logo: {
-        '@type': 'ImageObject',
-        url: 'https://4log.in/og-4log.svg',
-      },
-      description: '4LOG is a trending fashion brand creating bold T-shirts and apparel for people who do it anyway. Discover original designs made to stand out.',
-      brand: {
-        '@type': 'Brand',
-        name: '4LOG',
-      },
-    },
-  ],
+  structuredData: {
+    '@context': 'https://schema.org',
+    '@type': 'Organization',
+    name: '4LOG',
+    url: 'https://4log.in/',
+    logo: 'https://4log.in/favicon.png',
+  },
 };
 
 const aboutPageSeo = {

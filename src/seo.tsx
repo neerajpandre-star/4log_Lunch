@@ -44,13 +44,13 @@ const setCanonical = (url: string) => {
 
 const setJsonLd = (data: Record<string, unknown> | Array<Record<string, unknown>>) => {
   const scriptId = '4log-json-ld';
-  const existing = document.head.querySelector(`script[data-seo-id="${scriptId}"]`) as HTMLScriptElement | null;
-  const payload = Array.isArray(data) ? data : [data];
+  const existing = (document.head.querySelector(`script[data-seo-id="${scriptId}"]`) ||
+    document.head.querySelector('script[type="application/ld+json"]')) as HTMLScriptElement | null;
 
   const script = existing ?? document.createElement('script');
   script.setAttribute('type', 'application/ld+json');
   script.setAttribute('data-seo-id', scriptId);
-  script.textContent = JSON.stringify(payload);
+  script.textContent = JSON.stringify(data, null, 2);
   if (!existing) {
     document.head.appendChild(script);
   }
